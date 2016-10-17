@@ -11,11 +11,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 010af554679ddb14ca8f5288595dcdde, type: 3}
   m_Name: UIManConfig
   m_EditorClassIdentifier: 
-  dialogPrefabFolder: 
-  screenPrefabFolder: 
+  dialogPrefabFolder: Resources/
+  screenPrefabFolder: Resources/
   backgroundRootFolder: 
   dialogScriptFolder: 
   screenScriptFolder: 
-  selectedType: UINewViewModel
+  selectedType: UIPopupDialog
   generatingType: 
   generatingTypeIsDialog: 0
