@@ -383,7 +383,11 @@ namespace UnuGames
 			}		
 			string fieldName = CodeGenerationHelper.NormalizeFieldName (Name);
 			string propertyName = CodeGenerationHelper.NormalizePropertyName (Name);
-			string field = string.Format ("\t{0} _{1} = {2};", PropertyType.GetAllias (), fieldName, strDefaultValue);
+			string field = null;
+			if(PropertyType.IsAllias())
+				field = string.Format ("\t{0} _{1} = {2};", PropertyType.GetAllias (), fieldName, strDefaultValue);
+			else
+				field = string.Format ("\t{0} _{1};", PropertyType.GetAllias (), fieldName);
 			string attribute = "\t[UIManProperty]";
 			string property = string.Format ("\tpublic {0} {1} {{", PropertyType.GetAllias (), propertyName);
 			string getter = string.Format ("\t\tget {{ return _{0}; }}", fieldName);

@@ -348,7 +348,7 @@ namespace UnuGames
 			List<Type> types = GetAllTypes ();
 			List<string> observableTypes = new List<string> ();
 			for (int i = 0; i < types.Count; i++) {
-				if ((types [i].BaseType == typeof(ObservableModel) || types [i].IsAllias ()) && types [i] != excludeType) {
+				if ((types [i].BaseType == typeof(ObservableModel) || types [i].IsAllias () || types [i].IsSupportType ()) && types [i] != excludeType) {
 					observableTypes.Add (types [i].GetAllias ());
 				}
 			}
@@ -362,6 +362,20 @@ namespace UnuGames
 				return false;
 			else
 				return true;
+		}
+
+		static public bool IsSupportType (this System.Type type)
+		{
+			if (type == null)
+				return false;
+			List<string> listType = new List<string> ();
+			listType.Add ("Color");
+			listType.Add ("Vector3");
+
+			if (listType.Contains (type.Name))
+				return true;
+
+			return false;
 		}
 
 		static object GetCachedTypeInstance (Type type)
