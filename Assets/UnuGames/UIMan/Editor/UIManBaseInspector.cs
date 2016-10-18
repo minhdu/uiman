@@ -18,10 +18,17 @@ namespace UnuGames
 
 		public override void OnInspectorGUI ()
 		{
-			DrawDefaultInspector ();
+			GUILayout.BeginHorizontal ("Box");
+			LableHelper.HeaderLabel ("UIMan View Model");
+			GUILayout.EndHorizontal ();
+			LineHelper.Draw (Color.gray);
 
 			UIManBase uiManBase = (UIManBase)target;
 		
+			EditorGUILayout.Space ();
+			LableHelper.HeaderLabel ("General");
+			GUILayout.BeginVertical ("Box");
+
 			if (uiManBase is UIManDialog) {
 				UIManDialog dialog = (UIManDialog)uiManBase;
 				dialog.useCover = EditorGUILayout.Toggle (cover, dialog.useCover);
@@ -45,14 +52,28 @@ namespace UnuGames
 			uiManBase.motionShow = (UIMotion)EditorGUILayout.EnumPopup (show, uiManBase.motionShow);
 			uiManBase.motionHide = (UIMotion)EditorGUILayout.EnumPopup (hide, uiManBase.motionHide);
 			uiManBase.motionIdle = (UIMotion)EditorGUILayout.EnumPopup (idle, uiManBase.motionIdle);
+			if (uiManBase.motionIdle != UIMotion.CUSTOM_MECANIM_ANIMATION && uiManBase.motionIdle != UIMotion.NONE) {
+				EditorGUILayout.LabelField ("<color=red> Idle motion is now only support Mecanim animation!</color>", EditorGUIHelper.RichText (true));
+			}
 			uiManBase.animTime = EditorGUILayout.FloatField (time, uiManBase.animTime);
 			uiManBase.showPosition = EditorGUILayout.Vector3Field (position, uiManBase.showPosition);
 
-			if (GUILayout.Button ("Edit Logic")) {
+			GUILayout.EndVertical ();
+			LineHelper.Draw (Color.gray);
+
+			EditorGUILayout.Space ();
+			LableHelper.HeaderLabel ("Custom fields");
+			GUILayout.BeginVertical ("Box");
+			DrawDefaultInspector ();
+			GUILayout.EndVertical ();
+
+			EditorGUILayout.Space ();
+			if (GUILayout.Button ("Edit Logic", GUILayout.Height(25))) {
 				string handler = CodeGenerationHelper.GetScriptPathByType (target.GetType ());
 				handler = handler.Replace (".cs", ".Handler.cs");
 				UnityEditorInternal.InternalEditorUtility.OpenFileAtLineExternal (handler, 1);
 			}
+
 		}
 	}
 }

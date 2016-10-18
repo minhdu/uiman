@@ -79,7 +79,7 @@ namespace UnuGames
 
 			bool warn = false;
 			
-			if (typeName.Length <= 1 || (!typeName.Substring (0, 2).Equals ("UI") && !baseTypePopup.SelectedItem.Equals (CodeGenerator.GetSupportTypeName (0)))) {
+			if (typeName.Length <= 1 || (!typeName.Substring (0, 2).Equals ("UI") && !baseTypePopup.SelectedItem.Equals (UIGenerator.GetSupportTypeName (0)))) {
 				typeName = "UI" + typeName;
 				warn = true;
 			}
@@ -89,14 +89,14 @@ namespace UnuGames
 			UIManConfig config = Resources.Load<UIManConfig> ("UIManConfig");
 			
 			string savePath = "";
-			if (baseType.Equals (CodeGenerator.GetSupportTypeName (1))) {
+			if (baseType.Equals (UIGenerator.GetSupportTypeName (1))) {
 				savePath = config.screenScriptFolder;
-			} else if (baseType.Equals (CodeGenerator.GetSupportTypeName (2))) {
+			} else if (baseType.Equals (UIGenerator.GetSupportTypeName (2))) {
 				savePath = config.dialogScriptFolder;
 			}
 			
 			savePath = Application.dataPath + "/" + savePath + "/" + typeName + ".cs";
-			if (File.Exists (savePath) || CodeGenerator.IsViewModelExisted(typeName)) {
+			if (File.Exists (savePath) || UIGenerator.IsViewModelExisted(typeName)) {
 				EditorUtility.DisplayDialog ("Error", "View model name is already exist, please input other name!", "OK");
 				return;
 			}

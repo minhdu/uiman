@@ -16,6 +16,6 @@ MonoBehaviour:
   backgroundRootFolder: 
   dialogScriptFolder: 
   screenScriptFolder: 
-  selectedType: UIPopupDialog
+  selectedType: UINewViewModel
   generatingType: 
   generatingTypeIsDialog: 0

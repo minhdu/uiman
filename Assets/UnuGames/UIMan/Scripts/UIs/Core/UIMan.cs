@@ -555,9 +555,9 @@ namespace UnuGames
 					}
 
 					if(!string.IsNullOrEmpty(url)) {
-						int resFolderIndex = url.LastIndexOf ("/Resources/");
+						int resFolderIndex = url.LastIndexOf ("Resources/");
 						if (resFolderIndex > -1)
-							url = url.Substring (resFolderIndex+11);
+							url = url.Substring (resFolderIndex+10);
 					}
 				}
 				prefabURLCache.Add (uiType, url);

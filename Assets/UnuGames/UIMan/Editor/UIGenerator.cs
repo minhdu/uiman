@@ -7,12 +7,12 @@ using System.IO;
 
 namespace UnuGames
 {
-	public class CodeGenerator : EditorWindow
+	public class UIGenerator : EditorWindow
 	{
 		const string PREFAB_EXT = ".prefab";
 			
 		static string savedDirectory;
-		static CodeGenerator container;
+		static UIGenerator container;
 		UISearchField searchField;
 		ListView listTypes;
 		EditablePopup baseTypePopup;
@@ -44,12 +44,12 @@ namespace UnuGames
 			return ArrayUtility.Contains (types, name);
 		}
 
-		[MenuItem("UIMan/Script Generator", false, 1)]
+		[MenuItem("UIMan/UI Generator", false, 1)]
 		static void Init ()
 		{
 			ReflectUtils.RefreshAssembly (false);
 			types = ReflectUtils.GetAllUIManType ();
-			container = EditorWindow.GetWindow<CodeGenerator> (true, "UIMan Script Generator");
+			container = EditorWindow.GetWindow<UIGenerator> (true, "UIMan Script Generator");
 			container.minSize = new Vector2 (800, 600);
 			container.maxSize = container.minSize;
 			GetConfig ();
@@ -143,20 +143,28 @@ namespace UnuGames
 					GUILayout.Space (2);
 					GUILayout.BeginHorizontal();
 					if (GUILayout.Button ("Edit UI", GUILayout.Height (30))) {
-						bool isDialog = selectedType.BaseType == typeof(UIManDialog);
-						string prefabFolder = GetUIPrefabPath (selectedType, isDialog);
-						string prefabFile = selectedType.Name + PREFAB_EXT;
-						string prefabPath = Path.Combine (prefabFolder, prefabFile);
-						GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject> (prefabPath);
-						if (prefab == null) {
-							prefab = FindAssetObject<GameObject> (selectedType.Name, PREFAB_EXT);
-						}
 
-						GameObject prefabInstance = PrefabUtility.InstantiatePrefab (prefab) as GameObject;
-						if(isDialog)
-							prefabInstance.transform.SetParent (UIMan.Instance.dialogRoot, false);
-						else
-							prefabInstance.transform.SetParent (UIMan.Instance.screenRoot, false);
+						GameObject prefabInstance;
+						UnityEngine.Object obj = FindObjectOfType (selectedType);
+						if (obj != null) {
+							prefabInstance = ((MonoBehaviour)obj).gameObject;
+						} else {
+
+							bool isDialog = selectedType.BaseType == typeof(UIManDialog);
+							string prefabFolder = GetUIPrefabPath (selectedType, isDialog);
+							string prefabFile = selectedType.Name + PREFAB_EXT;
+							string prefabPath = Path.Combine (prefabFolder, prefabFile);
+							GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject> (prefabPath);
+							if (prefab == null) {
+								prefab = FindAssetObject<GameObject> (selectedType.Name, PREFAB_EXT);
+							}
+
+							prefabInstance = PrefabUtility.InstantiatePrefab (prefab) as GameObject;
+							if (isDialog)
+								prefabInstance.transform.SetParent (UIMan.Instance.dialogRoot, false);
+							else
+								prefabInstance.transform.SetParent (UIMan.Instance.screenRoot, false);
+						}
 						Selection.activeGameObject = prefabInstance;
 					}
 					GUILayout.EndHorizontal ();
