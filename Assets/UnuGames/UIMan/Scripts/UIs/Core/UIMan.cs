@@ -316,7 +316,7 @@ namespace UnuGames
 		/// <param name="button">Button.</param>
 		/// <param name="onOK">On O.</param>
 		/// <param name="callbackArgs">Callback arguments.</param>
-		public void ShowPopup (string title, string message, string button = "OK", System.Action<object[]> onOK = null, object[] callbackArgs = null)
+		public void ShowPopup (string title, string message, string button = "OK", System.Action<object[]> onOK = null, params object[] callbackArgs)
 		{
 			UICallback uiCallbacks = new UICallback (onOK);
 			ShowDialog<UIPopupDialog> (uiCallbacks, title, message, button, callbackArgs); 
@@ -332,7 +332,7 @@ namespace UnuGames
 		/// <param name="onYes">On yes.</param>
 		/// <param name="onNo">On no.</param>
 		/// <param name="callbackArgs">Callback arguments.</param>
-		public void ShowPopup (string title, string message, string buttonYes, string buttonNo, Action<object[]> onYes, Action<object[]> onNo = null, object[] callbackArgs = null)
+		public void ShowPopup (string title, string message, string buttonYes, string buttonNo, Action<object[]> onYes, Action<object[]> onNo = null, params object[] callbackArgs)
 		{
 			UICallback uiCallbacks = new UICallback (onYes, onNo);
 			ShowDialog<UIPopupDialog> (uiCallbacks, title, message, buttonYes, buttonNo, callbackArgs);

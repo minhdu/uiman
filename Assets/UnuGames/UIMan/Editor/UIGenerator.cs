@@ -49,7 +49,7 @@ namespace UnuGames
 		{
 			ReflectUtils.RefreshAssembly (false);
 			types = ReflectUtils.GetAllUIManType ();
-			container = EditorWindow.GetWindow<UIGenerator> (true, "UIMan Script Generator");
+			container = EditorWindow.GetWindow<UIGenerator> (true, "UIMan - UI Generator");
 			container.minSize = new Vector2 (800, 600);
 			container.maxSize = container.minSize;
 			GetConfig ();
