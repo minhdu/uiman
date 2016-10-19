@@ -3,18 +3,16 @@ using UnityEngine.UI;
 
 namespace UnuGames
 {
-	[RequireComponent(typeof(Text))]
+	[RequireComponent (typeof(Text))]
 	[DisallowMultipleComponent]
 	public class TextBinder : BinderBase
 	{
 
 		protected Text text;
 		[HideInInspector]
-		public BindingField
-			textValue = new BindingField ("Text");
+		public BindingField textValue = new BindingField ("Text");
 		[HideInInspector]
-		public BindingField
-			textColor = new BindingField ("Color", true);
+		public BindingField textColor = new BindingField ("Color", true);
 		public string Format;
 
 		public override void Init ()

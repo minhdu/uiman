@@ -378,7 +378,7 @@ namespace UnuGames
 			return false;
 		}
 
-		static object GetCachedTypeInstance (Type type)
+		static public object GetCachedTypeInstance (Type type)
 		{
 			object instance = null;
 			if (!cachedInstance.TryGetValue (type, out instance)) {

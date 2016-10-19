@@ -26,6 +26,8 @@ namespace UnuGames {
 			GetPropertyInfo ();
 			if (propertyInfo != null) {
 				model = propertyInfo.GetValue (viewModel, null);
+				if (model == null)
+					model = ReflectUtils.GetCachedTypeInstance (propertyInfo.PropertyType);
 				if(model != null)
 					viewModel.SubcriptObjectAction (model);
 			}

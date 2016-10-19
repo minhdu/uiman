@@ -2,7 +2,7 @@
 {
 	public interface IModule
 	{
-		object DataInstance {
+		object OriginalData {
 			get;
 			set;
 		}

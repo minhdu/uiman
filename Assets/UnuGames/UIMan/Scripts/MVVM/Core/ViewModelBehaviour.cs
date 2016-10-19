@@ -154,6 +154,20 @@ namespace UnuGames {
 				}
 			}
 		}
+
+		/// <summary>
+		/// Subcripts the object action.
+		/// </summary>
+		/// <param name="obj">Object.</param>
+		/// <param name="onChange">On change.</param>
+		public void SubcriptObjectAction (PropertyInfo property) {
+			MemberInfo[] members = property.GetType().GetMembers ();
+			for (int i = 0; i < members.Length; i++) {
+				if (members [i] is FieldInfo || members [i] is PropertyInfo) {
+					notifyableMembers.Add (members [i]);
+				}
+			}
+		}
 	}
 
 	/// <summary>
@@ -168,6 +182,6 @@ namespace UnuGames {
 		MONO_BEHAVIOR,
 
 		[DescriptionAttribute("Type Instance")]
-		TYPE_INSTANCE
+		PROPERTY
 	}
 }

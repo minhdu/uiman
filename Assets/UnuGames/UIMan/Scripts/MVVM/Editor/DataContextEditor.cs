@@ -31,16 +31,21 @@ namespace UnuGames
 					EditorGUILayout.LabelField ("<color=blue>[" + context.viewModel.GetCachedType ().FullName + "]</color>", EditorGUIHelper.RichText ());
 					GUILayout.EndHorizontal ();
 				}
-			} else if (context.type == ContextType.TYPE_INSTANCE) {
+			} else if (context.type == ContextType.PROPERTY) {
 			
 				context.viewModel = (ViewModelBehaviour)EditorGUILayout.ObjectField (lblContext, (Object)context.viewModel, typeof(ViewModelBehaviour), true);
 
 				string[] members = context.viewModel.GetAllMembers (MemberTypes.Field, MemberTypes.Property, MemberTypes.Field);
 				if (members != null) {
-					for (int i=0; i<members.Length; i++) {
-						if (members [i] == context.propertyName) {
-							selected = i;
-							break;
+
+					if (string.IsNullOrEmpty (context.propertyName)) {
+						context.propertyName = members [0];
+					} else {
+						for (int i = 0; i < members.Length; i++) {
+							if (members [i] == context.propertyName) {
+								selected = i;
+								break;
+							}
 						}
 					}
 

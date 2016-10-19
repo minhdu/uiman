@@ -7,7 +7,7 @@ using System.Reflection;
 
 namespace UnuGames
 {
-	[RequireComponent(typeof(ScrollRect))]
+	[RequireComponent (typeof(ScrollRect))]
 	[DisallowMultipleComponent]
 	public class ObservableListBinder : BinderBase
 	{
@@ -18,8 +18,7 @@ namespace UnuGames
 		public float contentHeight;
 		public float contentSpacing;
 		[HideInInspector]
-		public BindingField
-			observableList = new BindingField ("Data Source");
+		public BindingField observableList = new BindingField ("Data Source");
 		public GameObject contentPrefab;
 		public int poolSize = 10;
 		IObservaleCollection dataList;
@@ -68,11 +67,11 @@ namespace UnuGames
 			contentPrefab.SetActive (false);
 		}
 
-	#region Pooling
+		#region Pooling
 
 		void InitPool ()
 		{
-			for (int i=0; i<poolSize; i++) {
+			for (int i = 0; i < poolSize; i++) {
 				GameObject obj = Instantiate (contentPrefab, hidePosition, Quaternion.identity) as GameObject;
 				ViewModelBehaviour vm = obj.GetComponent<ViewModelBehaviour> ();
 				vmsPool.Enqueue (vm);
@@ -101,13 +100,13 @@ namespace UnuGames
 		{
 			return modulesPool.Dequeue ();
 		}
-	
+
 		void ReleaseModule (IModule module)
 		{
 			modulesPool.Enqueue (module);
 		}
 
-	#endregion
+		#endregion
 
 		void OnScroll (Vector2 velocity)
 		{
@@ -121,14 +120,14 @@ namespace UnuGames
 				IModule module = GetModuleFromPool ();
 				listVMs.Insert (index, vm);
 				listModules.Insert (index, module);
-				module.DataInstance = obj;
+				module.OriginalData = obj;
 			}
 			RecalculatePosition (index);
 		}
 
 		void HandleOnClear ()
 		{
-			for (int i=0; i<listVMs.Count; i++) {
+			for (int i = 0; i < listVMs.Count; i++) {
 				ReleaseVM (listVMs [i]);
 				ReleaseModule (listModules [i]);
 				listVMs [i].Recttransform.localPosition = hidePosition;
@@ -141,8 +140,8 @@ namespace UnuGames
 		void HandleOnRemove (object obj)
 		{
 			int indexToRemove = 0;
-			for (int i=0; i<listModules.Count; i++) {
-				if (listModules [i].DataInstance == obj) {
+			for (int i = 0; i < listModules.Count; i++) {
+				if (listModules [i].OriginalData == obj) {
 					indexToRemove = i;
 					break;
 				}
@@ -164,19 +163,19 @@ namespace UnuGames
 				IModule module = GetModuleFromPool ();
 				listVMs.Add (vm);
 				listModules.Add (module);
-				module.DataInstance = obj;
+				module.OriginalData = obj;
 			}
 			RecalculatePosition (listVMs.Count);
 		}
 
 		void HandleOnChange (int index, object obj)
 		{
-			listModules [index].DataInstance = obj;
+			listModules [index].OriginalData = obj;
 		}
 
 		void RecalculatePosition (int startIndex = 0)
 		{
-			for (int i=startIndex-1; i<dataList.Count; i++) {
+			for (int i = startIndex - 1; i < dataList.Count; i++) {
 				Vector2 position = Vector2.zero;
 				if (scrollRect.horizontal) {
 					position.x = i * contentWidth + (i + 1) * contentSpacing;
@@ -192,7 +191,7 @@ namespace UnuGames
 				contentRect.sizeDelta = new Vector2 (contentRect.sizeDelta.x, contentHeight * dataList.Count + contentSpacing * (dataList.Count + 1));
 			}
 		}
-	
+
 		public override void OnDisable ()
 		{
 			if (dataList != null) {

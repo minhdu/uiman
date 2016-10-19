@@ -58,7 +58,7 @@ namespace UnuGames {
 			
 			if (mDataContext.type == ContextType.MONO_BEHAVIOR) {
 				return mDataContext.viewModel.GetAllMembers(memberTypes);
-			} else if(mDataContext.type == ContextType.TYPE_INSTANCE) {
+			} else if(mDataContext.type == ContextType.PROPERTY) {
 				return mDataContext.GetPropertyInfo().GetAllMembers(memberTypes);
 			}
 
@@ -72,7 +72,7 @@ namespace UnuGames {
 			MemberInfo[] infos = null;
 			if (mDataContext.type == ContextType.MONO_BEHAVIOR) {
 				infos = mDataContext.viewModel.GetAllMembersInfo(memberTypes);
-			} else if(mDataContext.type == ContextType.TYPE_INSTANCE) {
+			} else if(mDataContext.type == ContextType.PROPERTY) {
 				infos = mDataContext.GetPropertyInfo().GetAllMembersInfo(memberTypes);
 			}
 
