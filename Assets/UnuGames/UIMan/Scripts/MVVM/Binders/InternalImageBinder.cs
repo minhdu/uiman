@@ -13,7 +13,7 @@ namespace UnuGames
 		public BindingField imageValue = new BindingField ("Image");
 		[HideInInspector]
 		public BindingField imageColor = new BindingField ("Color");
-		private string resourcePath = "Images/";
+		public string resourcePath = "Images/";
 
 		public bool autoCorrectSize;
 		public bool zeroAlphaOnImageNull;
