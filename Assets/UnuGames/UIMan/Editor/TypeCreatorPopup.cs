@@ -105,10 +105,15 @@ namespace UnuGames
 			string scriptName = paths [paths.Length - 1];
 			scriptName = scriptName.Replace (".cs", "");
 
-			config.generatingType = typeName;
+			if(baseType != arrSupportType[0])
+				config.generatingType = typeName;
+
 			string code = CodeGenerationHelper.GenerateScript (typeName, baseType);
 			CodeGenerationHelper.SaveScript (savePath, code, true);
-			GenerateViewModelHandler (savePath);
+
+			if(baseType != arrSupportType[0])
+				GenerateViewModelHandler (savePath);
+
 			AssetDatabase.Refresh (ImportAssetOptions.Default);
 
 			if (warn) {

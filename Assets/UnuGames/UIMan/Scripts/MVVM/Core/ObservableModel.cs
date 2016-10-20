@@ -34,7 +34,6 @@ namespace UnuGames
 		{
 			string propertyName = GetCaller ();
 			PropertyInfo property = null;
-			UnityEngine.Debug.LogError (propertyName + propertyCache.Count);
 			if (propertyCache.TryGetValue (propertyName, out property)) {
 				object newValue = property.GetValue (this, null);
 				NotifyPropertyChanged (propertyName, newValue);
