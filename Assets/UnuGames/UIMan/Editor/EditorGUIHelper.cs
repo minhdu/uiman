@@ -2,18 +2,17 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace UnuGames
-{
+namespace UnuGames {
 	public class UISearchField
 	{
-	
+		
 		string keyWord = "";
 
 		public string KeyWord {
 			get { return keyWord; }
 			set { keyWord = value; }
 		}
-	
+
 		string oldKeyWord = "";
 		GUIStyle searchFieldStyle;
 		GUIStyle searchCancelButtonStyle;
@@ -36,7 +35,7 @@ namespace UnuGames
 			toolbarDropDownStyle = GUI.skin.FindStyle ("ToolbarDropDown");
 			_leftButtonText = leftButtonText;
 		}
-	
+
 		public void Draw ()
 		{
 			GUILayout.BeginHorizontal (toolbarStyle);
@@ -51,20 +50,20 @@ namespace UnuGames
 			}
 
 			oldKeyWord = KeyWord;
-		
+			
 			KeyWord = GUILayout.TextField (KeyWord, searchFieldStyle);
-		
+			
 			if (GUILayout.Button ("", searchCancelButtonStyle)) {
 				KeyWord = "";
 				GUI.FocusControl (null);
 			}
-		
+			
 			if (!oldKeyWord.Equals (KeyWord)) {
 				if (_onKeyWordChange != null) {
 					_onKeyWordChange (KeyWord);
 				}
 			}
-		
+			
 			GUILayout.EndHorizontal ();
 		}
 	}
@@ -107,13 +106,13 @@ namespace UnuGames
 			_scrollPosition = GUILayout.BeginScrollView (_scrollPosition, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
 
 			for (int i=0; i<_items.Length; i++) {
-			
+
 				// Filter item by keyword
 				if (!string.IsNullOrEmpty (_filter)) {
 					if (_items [i].ToLower ().IndexOf (_filter.ToLower (), StringComparison.Ordinal) < 0)
 						continue;
 				}
-			
+
 				// Draw suitable items
 				if (_selectOnMouseHover) {
 					if (GUILayout.Button (_items [i], menuItemStyle)) {
@@ -127,12 +126,12 @@ namespace UnuGames
 					}
 				}
 
-			
+
 				// Update button's status (for hover event)
 				if (_selectOnMouseHover)
 					_window.Repaint ();
 			}
-		
+
 			GUILayout.EndScrollView ();
 		}
 
@@ -165,7 +164,7 @@ namespace UnuGames
 
 		public EditablePropertyDrawer (Type viewModelType, CustomPropertyInfo property, Action<CustomPropertyInfo> onPropertyChanged, Action<CustomPropertyInfo> onPropertyDelete)
 		{
-	
+		
 			buttonSaveStyle = new GUIStyle (GUI.skin.FindStyle ("button"));
 			buttonSaveStyle.normal.textColor = Color.gray;
 
@@ -175,7 +174,7 @@ namespace UnuGames
 			_onPropertyDelete = onPropertyDelete;
 
 			observableTypes = ReflectUtils.GetAllObservableType (_viewModelType);
-			for (int i = 0; i<observableTypes.Length; i++) {
+			for (int i = 0; i < observableTypes.Length; i++) {
 				if (_property.LastPropertyType.GetAllias () == observableTypes [i]) {
 					selectedType = i;
 					break;
@@ -185,6 +184,7 @@ namespace UnuGames
 
 		public void Draw (float totalWidth)
 		{
+
 			GUILayout.BeginHorizontal ();
 
 			GUILayout.BeginVertical ();
@@ -302,11 +302,19 @@ namespace UnuGames
 	public class LineHelper
 	{
 
-		static public void Draw (Color color, float height = 1)
+		static public void Draw (Color color, float width, float height = 1)
 		{
 			Color backupColor = GUI.color;
 			GUI.color = color;
-			GUILayout.Box (Texture2D.whiteTexture, GUILayout.ExpandWidth(true), GUILayout.Height (height));
+			GUILayout.Box (Texture2D.whiteTexture, GUILayout.Width (width - 20), GUILayout.Height (height));
+			GUI.color = backupColor;
+		}
+
+		static public void Draw (Color color)
+		{
+			Color backupColor = GUI.color;
+			GUI.color = color;
+			GUILayout.Box (Texture2D.whiteTexture, GUILayout.ExpandWidth(true) , GUILayout.Height (1f));
 			GUI.color = backupColor;
 		}
 	}
@@ -341,7 +349,7 @@ namespace UnuGames
 				titleLabel.fontSize = titleLabel.fontSize + 15;
 				titleLabel.alignment = TextAnchor.MiddleCenter;
 			}
-		
+			
 			GUILayout.BeginHorizontal ();
 			GUILayout.Space (5);
 			GUILayout.Label (text, titleLabel);
@@ -408,6 +416,55 @@ namespace UnuGames
 		static public bool QuickPickerButton ()
 		{
 			return GUILayout.Button ("Quick Picker");
+		}
+
+		static public Vector3 DrawVector3 (string label, float x, float y, float z) {
+			return EditorGUILayout.Vector3Field (label, new Vector3 (x, y, z));
+		}
+
+		static public Vector3 DrawArc (string label, float angle, float radius, float height) {
+			EditorGUILayout.BeginVertical ();
+			EditorGUILayout.PrefixLabel (label);
+			GUILayout.Space (-4);
+			EditorGUILayout.BeginHorizontal ();
+			EditorGUILayout.LabelField ("A", GUILayout.Width (12));
+			angle = EditorGUILayout.FloatField (angle);
+			EditorGUILayout.LabelField ("R", GUILayout.Width (12));
+			radius = EditorGUILayout.FloatField (radius);
+			EditorGUILayout.LabelField ("H", GUILayout.Width (12));
+			height = EditorGUILayout.FloatField (height);
+			EditorGUILayout.EndHorizontal ();
+			EditorGUILayout.EndVertical ();
+
+			return new Vector3 (angle, radius, height);
+		}
+
+		static public float DrawFloat (string label, float value) {
+			EditorGUILayout.BeginVertical ();
+			EditorGUILayout.PrefixLabel (label);
+			GUILayout.Space (-4);
+			value = EditorGUILayout.FloatField (value);
+			EditorGUILayout.EndVertical ();
+
+			return value;
+		}
+	}
+
+	public class NamingBox
+	{
+		string name;
+
+		public void Draw (Action<string> onCreate, Action onCancel)
+		{
+			name = EditorGUILayout.TextField (name);
+			if (GUILayout.Button ("Create")) {
+				if (onCreate != null)
+					onCreate (name);
+			}
+			if (GUILayout.Button ("Cancel")) {
+				if (onCancel != null)
+					onCancel ();
+			}
 		}
 	}
 }

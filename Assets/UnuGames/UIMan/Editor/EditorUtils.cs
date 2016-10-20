@@ -22,5 +22,13 @@ namespace UnuGames
 				}
 			}
 		}
+
+		static public void OverwriteAsset<T> (string path, string newPath) where T : Object {
+			if (path != newPath) {
+				if (AssetDatabase.LoadAssetAtPath<T> (newPath) != null)
+					AssetDatabase.DeleteAsset (newPath);
+				AssetDatabase.CopyAsset (path, newPath);
+			}
+		}
 	}
 }

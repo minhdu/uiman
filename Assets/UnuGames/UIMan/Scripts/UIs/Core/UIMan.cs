@@ -15,7 +15,7 @@ using System.IO;
 
 namespace UnuGames
 {
-	[StartupAttribute(StartupType.PREFAB)]
+	[StartupAttribute (StartupType.PREFAB)]
 	public class UIMan : SingletonBehaviour<UIMan>
 	{
 
@@ -47,6 +47,7 @@ namespace UnuGames
 		public bool IsLoadingDialog { get; set; }
 
 		UIManScreen _mCurrentScreen;
+
 		public UIManScreen CurrentScreen {
 			get {
 				return _mCurrentScreen;
@@ -57,6 +58,7 @@ namespace UnuGames
 		}
 
 		string _mCurrentUnityScene;
+
 		public string CurrentUnityScene {
 			get {
 				return _mCurrentUnityScene;
@@ -67,6 +69,7 @@ namespace UnuGames
 		}
 
 		static UILoading _uiLoading;
+
 		static public UILoading Loading {
 			get {
 				if (_uiLoading == null)
@@ -76,7 +79,8 @@ namespace UnuGames
 		}
 
 		// Initialize
-		public override void Init () {
+		public override void Init ()
+		{
 			_uiLoading = GetComponentInChildren<UILoading> ();
 			config = Resources.Load<UIManConfig> ("UIManConfig");
 			bgTrans = background.GetComponent<Transform> ();
@@ -87,11 +91,11 @@ namespace UnuGames
 				for (int i = 0; i < screens.Length; i++) {
 					screenDict.Add (screens [i].UIType, screens [i]);
 				}
-				CurrentScreen = screenDict [screens[screens.Length-1].UIType];
+				CurrentScreen = screenDict [screens [screens.Length - 1].UIType];
 			}
 		}
 
-	#region Layer indexer
+		#region Layer indexer
 
 		/// <summary>
 		/// Brings to front.
@@ -126,9 +130,9 @@ namespace UnuGames
 			ui.SetSiblingIndex (0);
 		}
 
-	#endregion
+		#endregion
 
-	#region Features
+		#region Features
 
 		/// <summary>
 		/// 
@@ -162,7 +166,7 @@ namespace UnuGames
 			BringToFront (screenRoot, screen.transform, 2);
 
 			screen.OnShow (args);
-			OnShowUI (uiType, args);
+			OnShowUI (screen, args);
 			DoAnimShow (screen);
 
 			CurrentScreen = screen;
@@ -176,7 +180,8 @@ namespace UnuGames
 		/// <param name="seal">If set to <c>true</c> seal.</param>
 		/// <param name="args">Arguments.</param>
 		/// <typeparam name="T">The 1st type parameter.</typeparam>
-		public void ShowScreen<T> (bool seal, params object[] args) {
+		public void ShowScreen<T> (bool seal, params object[] args)
+		{
 			ShowScreen (typeof(T), seal, args);
 		}
 
@@ -214,7 +219,7 @@ namespace UnuGames
 			CurrentScreen.HideMe ();
 			UIManScreen beforeScreen = screenQueue [screenQueue.Count - 2];
 
-			OnBack (CurrentScreen.UIType, beforeScreen.UIType, args);
+			OnBack (CurrentScreen, beforeScreen, args);
 
 			screenQueue.RemoveAt (screenQueue.Count - 1);
 			ShowScreen (beforeScreen.UIType, true, args);
@@ -229,7 +234,7 @@ namespace UnuGames
 			UIManScreen screen = null;
 			if (screenDict.TryGetValue (uiType, out screen)) {
 				screen.OnHide ();
-				OnHideUI (uiType);
+				OnHideUI (screen);
 				DoAnimHide (screen);
 			} else {
 				UnuLogger.LogFormatWarning ("There are no UI of {0} has been show!", uiType.Name);
@@ -241,7 +246,8 @@ namespace UnuGames
 		/// Hides the screen.
 		/// </summary>
 		/// <typeparam name="T">The 1st type parameter.</typeparam>
-		public void HideScreen<T> () {
+		public void HideScreen<T> ()
+		{
 			HideScreen (typeof(T));
 		}
 
@@ -279,7 +285,7 @@ namespace UnuGames
 			IsInDialogTransition = true;
 			dialog.SetCallbacks (callbacks);
 			dialog.OnShow (args);
-			OnShowUI (uiType, args);
+			OnShowUI (dialog, args);
 			DoAnimShow (dialog);
 		}
 
@@ -289,7 +295,8 @@ namespace UnuGames
 		/// <param name="callbacks">Callbacks.</param>
 		/// <param name="args">Arguments.</param>
 		/// <typeparam name="T">The 1st type parameter.</typeparam>
-		public void ShowDialog<T> (UICallback callbacks, params object[] args) {
+		public void ShowDialog<T> (UICallback callbacks, params object[] args)
+		{
 			ShowDialog (typeof(T), callbacks, args);
 		}
 
@@ -316,7 +323,7 @@ namespace UnuGames
 		/// <param name="button">Button.</param>
 		/// <param name="onOK">On O.</param>
 		/// <param name="callbackArgs">Callback arguments.</param>
-		public void ShowPopup (string title, string message, string button = "OK", System.Action<object[]> onOK = null, params object[] callbackArgs)
+		public void ShowPopup (string title, string message, string button = "OK", Action<object[]> onOK = null, params object[] callbackArgs)
 		{
 			UICallback uiCallbacks = new UICallback (onOK);
 			ShowDialog<UIPopupDialog> (uiCallbacks, title, message, button, callbackArgs); 
@@ -364,7 +371,7 @@ namespace UnuGames
 				}
 				IsInDialogTransition = true;
 				dialog.OnHide ();
-				OnHideUI (uiType);
+				OnHideUI (dialog);
 				DoAnimHide (dialog);
 			} else {
 				UnuLogger.LogFormatWarning ("There are no UI of {0} has been show!", uiType.Name);
@@ -373,10 +380,19 @@ namespace UnuGames
 		}
 
 		/// <summary>
+		/// Hides the dialog.
+		/// </summary>
+		/// <typeparam name="T">The 1st type parameter.</typeparam>
+		public void HideDialog<T> ()
+		{
+			HideDialog (typeof(T));
+		}
+
+		/// <summary>
 		/// Loads the unity scene.
 		/// </summary>
 		/// <param name="name">Name.</param>
-		void LoadUnityScene (string name, Type screen, bool showLoading, params object[] args)
+		public void LoadUnityScene (string name, Type screen, bool showLoading, params object[] args)
 		{
 			Instance.cover.gameObject.SetActive (false);
 			if (showLoading)
@@ -437,60 +453,60 @@ namespace UnuGames
 		/// Registers the on back.
 		/// </summary>
 		/// <param name="callback">Callback.</param>
-		public void RegisterOnBack (System.Action<Type, Type, object[]> callback)
+		public void RegisterOnBack (Action<UIManBase, UIManBase, object[]> callback)
 		{
-			UIEventDispatcher.AddEventListener<Type, Type, object[]> (UIManEvents.UIMan.OnBack, callback);
+			UIEventDispatcher.AddEventListener<UIManBase, UIManBase, object[]> (UIManEvents.UIMan.OnBack, callback);
 		}
 
 		/// <summary>
 		/// Registers the on show U.
 		/// </summary>
 		/// <param name="callback">Callback.</param>
-		public void RegisterOnShowUI (System.Action<Type, object[]> callback)
+		public void RegisterOnShowUI (Action<UIManBase, object[]> callback)
 		{
-			UIEventDispatcher.AddEventListener<Type, object[]> (UIManEvents.UIMan.OnShowUI, callback);
+			UIEventDispatcher.AddEventListener<UIManBase, object[]> (UIManEvents.UIMan.OnShowUI, callback);
 		}
 
 		/// <summary>
 		/// Registers the on show user interface complete.
 		/// </summary>
 		/// <param name="callback">Callback.</param>
-		public void RegisterOnShowUIComplete (System.Action<Type, object[]> callback)
+		public void RegisterOnShowUIComplete (Action<UIManBase, object[]> callback)
 		{
-			UIEventDispatcher.AddEventListener<Type, object[]> (UIManEvents.UIMan.OnShowUIComplete, callback);
+			UIEventDispatcher.AddEventListener<UIManBase, object[]> (UIManEvents.UIMan.OnShowUIComplete, callback);
 		}
 
 		/// <summary>
 		/// Registers the on hide U.
 		/// </summary>
 		/// <param name="callback">Callback.</param>
-		public void RegisterOnHideUI (System.Action<Type> callback)
+		public void RegisterOnHideUI (Action<UIManBase> callback)
 		{
-			UIEventDispatcher.AddEventListener<Type> (UIManEvents.UIMan.OnHideUI, callback);
+			UIEventDispatcher.AddEventListener<UIManBase> (UIManEvents.UIMan.OnHideUI, callback);
 		}
 
 		/// <summary>
 		/// Registers the on hide user interface complete.
 		/// </summary>
 		/// <param name="callback">Callback.</param>
-		public void RegisterOnHideUIComplete (System.Action<Type> callback)
+		public void RegisterOnHideUIComplete (Action<UIManBase> callback)
 		{
-			UIEventDispatcher.AddEventListener<Type> (UIManEvents.UIMan.OnHideUIComplete, callback);
+			UIEventDispatcher.AddEventListener<UIManBase> (UIManEvents.UIMan.OnHideUIComplete, callback);
 		}
 
-	#endregion
+		#endregion
 
-	#region Events
-	
+		#region Events
+
 		/// <summary>
 		/// Raises the back event.
 		/// </summary>
 		/// <param name="before">Before.</param>
 		/// <param name="after">After.</param>
 		/// <param name="args">Arguments.</param>
-		void OnBack (Type before, Type after, params object[] args)
+		void OnBack (UIManBase handlerBefore, UIManBase handlerAfter, params object[] args)
 		{
-			UIEventDispatcher.TriggerEvent<Type, Type, object[]> (UIManEvents.UIMan.OnBack, before, after, args);
+			UIEventDispatcher.TriggerEvent<UIManBase, UIManBase, object[]> (UIManEvents.UIMan.OnBack, handlerBefore, handlerAfter, args);
 		}
 
 		/// <summary>
@@ -498,42 +514,42 @@ namespace UnuGames
 		/// </summary>
 		/// <param name="dialog">Dialog.</param>
 		/// <param name="args">Arguments.</param>
-		void OnShowUI (Type ui, params object[] args)
+		void OnShowUI (UIManBase handler, params object[] args)
 		{
-			UIEventDispatcher.TriggerEvent<Type, object[]> (UIManEvents.UIMan.OnShowUI, ui, args);
+			UIEventDispatcher.TriggerEvent<UIManBase, object[]> (UIManEvents.UIMan.OnShowUI, handler, args);
 		}
-	
+
 		/// <summary>
 		/// Raises the show user interface complete event.
 		/// </summary>
 		/// <param name="ui">User interface.</param>
 		/// <param name="args">Arguments.</param>
-		void OnShowUIComplete (Type ui, params object[] args)
+		void OnShowUIComplete (UIManBase handler, params object[] args)
 		{
-			UIEventDispatcher.TriggerEvent<Type, object[]> (UIManEvents.UIMan.OnShowUIComplete, ui, args);
+			UIEventDispatcher.TriggerEvent<UIManBase, object[]> (UIManEvents.UIMan.OnShowUIComplete, handler, args);
 		}
 
 		/// <summary>
 		/// Raises the hide U event.
 		/// </summary>
 		/// <param name="ui">User interface.</param>
-		void OnHideUI (Type ui)
+		void OnHideUI (UIManBase handler)
 		{
-			UIEventDispatcher.TriggerEvent<Type> (UIManEvents.UIMan.OnHideUI, ui);
+			UIEventDispatcher.TriggerEvent<UIManBase> (UIManEvents.UIMan.OnHideUI, handler);
 		}
 
 		/// <summary>
 		/// Raises the hide user interface complete event.
 		/// </summary>
 		/// <param name="ui">User interface.</param>
-		void OnHideUIComplete (Type ui)
+		void OnHideUIComplete (UIManBase handler)
 		{
-			UIEventDispatcher.TriggerEvent<Type> (UIManEvents.UIMan.OnHideUIComplete, ui);
+			UIEventDispatcher.TriggerEvent<UIManBase> (UIManEvents.UIMan.OnHideUIComplete, handler);
 		}
 
-	#endregion
+		#endregion
 
-	#region Utils
+		#region Utils
 
 		/// <summary>
 		/// Gets the user interface prefab UR.
@@ -541,10 +557,11 @@ namespace UnuGames
 		/// <returns>The user interface prefab UR.</returns>
 		/// <param name="uiType">User interface type.</param>
 		/// <param name="isDialog">If set to <c>true</c> is dialog.</param>
-		string GetUIPrefabPath (Type uiType, bool isDialog) {
+		string GetUIPrefabPath (Type uiType, bool isDialog)
+		{
 			string url = "";
 			if (!prefabURLCache.TryGetValue (uiType, out url)) {
-				object[] attributes = uiType.GetCustomAttributes(typeof(UIDescriptor), true);
+				object[] attributes = uiType.GetCustomAttributes (typeof(UIDescriptor), true);
 				if (attributes != null && attributes.Length > 0) {
 					url = ((UIDescriptor)attributes [0]).URL;
 				} else {
@@ -554,10 +571,10 @@ namespace UnuGames
 						url = config.screenPrefabFolder;
 					}
 
-					if(!string.IsNullOrEmpty(url)) {
+					if (!string.IsNullOrEmpty (url)) {
 						int resFolderIndex = url.LastIndexOf ("Resources/");
 						if (resFolderIndex > -1)
-							url = url.Substring (resFolderIndex+10);
+							url = url.Substring (resFolderIndex + 10);
 					}
 				}
 				prefabURLCache.Add (uiType, url);
@@ -586,7 +603,7 @@ namespace UnuGames
 			if (uiBase is UIManScreen) {
 				uiBase.Trans.SetParent (screenRoot, false);
 				uiBase.RectTrans.localScale = Vector3.one;
-				if(!screenDict.ContainsKey(uiType))
+				if (!screenDict.ContainsKey (uiType))
 					screenDict.Add (uiType, uiBase as UIManScreen);
 				bool seal = (bool)args [1];
 				object[] param = (object[])args [2];
@@ -641,7 +658,7 @@ namespace UnuGames
 				.setEase (LeanTweenType.linear)
 					.setOnComplete (show => {
 					ui.OnShowComplete ();
-					OnShowUIComplete (ui.UIType);
+					OnShowUIComplete (ui);
 					if (ui.GetUIBaseType () == UIBaseType.DIALOG) {
 						IsInDialogTransition = false;
 					}
@@ -681,7 +698,7 @@ namespace UnuGames
 					.setOnComplete (hide => {
 					ui.RectTrans.anchoredPosition3D = hidePos;
 					ui.OnHideComplete ();
-					OnHideUIComplete (ui.UIType);
+					OnHideUIComplete (ui);
 					if (ui.GetUIBaseType () == UIBaseType.DIALOG) {
 						IsInDialogTransition = false;
 						DequeueDialog ();
@@ -773,9 +790,11 @@ namespace UnuGames
 			return false;
 		}
 
-		public void DestroyUI<T> (bool dialog)
+		public void DestroyUI<T> ()
 		{
 			Type uiType = typeof(T);
+			bool dialog = uiType.BaseType == typeof(UIManDialog) ? true : false;
+
 			UIManBase ui = null;
 			if (dialog) {
 				if (dialogDict.ContainsKey (uiType)) {
@@ -794,8 +813,10 @@ namespace UnuGames
 			}
 		}
 
-		public UIManBase GetHandler<T> (bool dialog) {
+		public UIManBase GetHandler<T> ()
+		{
 			Type uiType = typeof(T);
+			bool dialog = uiType.BaseType == typeof(UIManDialog) ? true : false;
 			if (dialog) {
 				if (dialogDict.ContainsKey (uiType))
 					return dialogDict [uiType];
@@ -809,6 +830,6 @@ namespace UnuGames
 			}
 		}
 
-	#endregion
+		#endregion
 	}
 }

@@ -52,6 +52,8 @@ namespace UnuGames
 
 		void OnGUI ()
 		{
+			if (Event.current.keyCode == KeyCode.Escape)
+				Close ();
 
 			if (mItems == null)
 				return;
@@ -72,6 +74,11 @@ namespace UnuGames
 		static public void SetPopupRect (Rect rect)
 		{
 			inspectorRect = rect;
+		}
+
+		static public void SetShowPosition ()
+		{
+			SetPopupRect (new Rect (GUILayoutUtility.GetLastRect().x, Event.current.mousePosition.y, GUILayoutUtility.GetLastRect ().width, 10));
 		}
 
 		/// <summary>
