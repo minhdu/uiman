@@ -73,7 +73,7 @@ namespace UnuGames
 		static public UILoading Loading {
 			get {
 				if (_uiLoading == null)
-					_uiLoading = Instance.GetComponentInChildren<UILoading> ();
+					_uiLoading = Instance.GetComponentInChildren<UILoading> (true);
 				return _uiLoading;
 			}
 		}
@@ -157,7 +157,7 @@ namespace UnuGames
 
 			if (screen.useBackground) {
 				background.gameObject.SetActive (true);
-				string bgName = config.backgroundRootFolder + screen.backgroundType.ToString ();
+				string bgName = config.backgroundRootFolder + screen.backgroundType;
 				ResourceFactory.LoadAsync<Texture2D> (bgName, SetScreenBackground);
 
 				BringToFront (screenRoot, bgTrans, 1);
@@ -411,6 +411,7 @@ namespace UnuGames
 		IEnumerator LoadUnityScene (string name, Type screen, params object[] args)
 		{
 			yield return SceneManager.LoadSceneAsync (name);
+			HideScreen (CurrentScreen.UIType);
 			OnLoadUnitySceneComplete (screen, args);
 		}
 
@@ -813,7 +814,7 @@ namespace UnuGames
 			}
 		}
 
-		public UIManBase GetHandler<T> ()
+		public UIManBase GetHandler<T> () where T : UIManBase
 		{
 			Type uiType = typeof(T);
 			bool dialog = uiType.BaseType == typeof(UIManDialog) ? true : false;

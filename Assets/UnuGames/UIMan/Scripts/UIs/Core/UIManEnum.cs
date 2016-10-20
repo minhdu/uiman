@@ -34,11 +34,6 @@ namespace UnuGames
 		IDLE
 	}
 
-	public enum UIScreenBG
-	{
-		COMMON
-	}
-
 	public enum UIState
 	{
 		SHOW,

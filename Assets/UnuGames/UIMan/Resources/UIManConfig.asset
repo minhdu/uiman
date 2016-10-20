@@ -15,7 +15,7 @@ MonoBehaviour:
   screenPrefabFolder: Resources/
   backgroundRootFolder: 
   dialogScriptFolder: 
-  screenScriptFolder: 
-  selectedType: UINewViewModel
+  screenScriptFolder: /Example/Example4
+  selectedType: UIExample5
   generatingType: 
   generatingTypeIsDialog: 0

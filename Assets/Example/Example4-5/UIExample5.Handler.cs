@@ -1,27 +1,18 @@
 ﻿using UnityEngine;
 using UnuGames;
 using UnuGames.MVVM;
-using System.Collections;
 
-public partial class UIExample2 : UIManDialog {
+public partial class UIExample5 : UIManScreen {
 
 #region Fields
 
 	// Your fields here
-
 #endregion
 
 #region Built-in Events
 	public override void OnShow (params object[] args)
 	{
 		base.OnShow (args);
-		Messsage = (string)args [0];
-		ButtonText = (string)args [1];
-		TextColor = (Color)args [2];
-		InternalImageName = (string)args [3];
-		ShowImageLeft = (bool)args [4];
-		NumberValue = (int)args [5];
-		ExternalImageName = (string)args [6];
 	}
 
 	public override void OnShowComplete ()
@@ -42,22 +33,8 @@ public partial class UIExample2 : UIManDialog {
 
 #region Custom implementation
 
-	// Your custom code here
-	public void Close1 () {
-		this.Callback (0, "This is callback from dialog button 1!");
-	}
-
-	public void Close2 () {
-		this.Callback (1, "This is callback from dialog button 2!");
-		UIMan.Loading.Show ();
-	}
-
-	IEnumerator WaitSomething () {
-		yield return new WaitForSeconds (2);
-	}
-
-	public void Log () {
-		Debug.Log ("This is log from Example2!");
+	public void Back () {
+		UIMan.Instance.BackScreen ();
 	}
 #endregion
 

@@ -13,8 +13,10 @@ namespace UnuGames
 	[DisallowMultipleComponent]
 	public class UIManScreen : UIManBase
 	{
+		[HideInInspector]
 		public bool useBackground = false;
-		public UIScreenBG backgroundType = UIScreenBG.COMMON;
+		[HideInInspector]
+		public string backgroundType = "";
 
 		public override UIBaseType GetUIBaseType ()
 		{

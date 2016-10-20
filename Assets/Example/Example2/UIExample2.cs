@@ -29,11 +29,11 @@ public partial class UIExample2 : UIManDialog {
 		set { _textColor = value; OnPropertyChanged(); }
 	}
 
-	string _imageName = "";
+	string _internalImageName = "";
 	[UIManProperty]
-	public string ImageName {
-		get { return _imageName; }
-		set { _imageName = value; OnPropertyChanged(); }
+	public string InternalImageName {
+		get { return _internalImageName; }
+		set { _internalImageName = value; OnPropertyChanged(); }
 	}
 
 	bool _showImageLeft = false;
@@ -48,6 +48,13 @@ public partial class UIExample2 : UIManDialog {
 	public int NumberValue {
 		get { return _numberValue; }
 		set { _numberValue = value; OnPropertyChanged(); }
+	}
+
+	string _externalImageName = "";
+	[UIManProperty]
+	public string ExternalImageName {
+		get { return _externalImageName; }
+		set { _externalImageName = value; OnPropertyChanged(); }
 	}
 
 }

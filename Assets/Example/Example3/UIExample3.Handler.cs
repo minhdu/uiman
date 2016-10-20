@@ -60,6 +60,13 @@ public partial class UIExample3 : UIManScreen {
 	public void Clear () {
 		friends.Clear ();
 	}
+
+	/// <summary>
+	/// Opens the example4.
+	/// </summary>
+	public void OpenExample4 () {
+		UIMan.Instance.ShowScreen<UIExample4> ();
+	}
 #endregion
 
 #region Override animations

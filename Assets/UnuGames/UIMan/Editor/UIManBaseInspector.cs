@@ -15,6 +15,7 @@ namespace UnuGames
 		GUIContent time = new GUIContent ("Time", "Total time to do built-in or custom script animation");
 		GUIContent position = new GUIContent ("Position", "Target position to show UI");
 		GUIContent cover = new GUIContent ("Use Cover", "Show gray cover after dialog to prevent click behind elements");
+		GUIContent background = new GUIContent ("Use Background", "Setting background image behine your screen elements");
 
 		public override void OnInspectorGUI ()
 		{
@@ -32,6 +33,13 @@ namespace UnuGames
 			if (uiManBase is UIManDialog) {
 				UIManDialog dialog = (UIManDialog)uiManBase;
 				dialog.useCover = EditorGUILayout.Toggle (cover, dialog.useCover);
+				EditorUtility.SetDirty (target);
+			}
+			else if (uiManBase is UIManBase) {
+				UIManScreen screen = (UIManScreen)uiManBase;
+				screen.useBackground = EditorGUILayout.Toggle (background, screen.useBackground);
+				if(screen.useBackground)
+					screen.backgroundType = EditorGUILayout.TextField (screen.backgroundType);
 				EditorUtility.SetDirty (target);
 			}
 
