@@ -2,8 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using UnuGames;
 
-public class ImageFactory : MonoBehaviour {
+public class ImageFactory : SingletonBehaviour<ImageFactory> {
 
 	static Dictionary<string, WWW> inprogressWWW = new Dictionary<string, WWW>();
 	static Dictionary<string, Action<Texture>> loadTextureCallbacks = new Dictionary<string, Action<Texture>>();
@@ -11,23 +12,23 @@ public class ImageFactory : MonoBehaviour {
 	static Dictionary<string, Texture> cache = new Dictionary<string, Texture>();
 	Vector2 centerPivot = new Vector2(0.5f, 0.5f);
 
-	static public void LoadSprite (string url, Action<Sprite> onLoadComplete) {
-		LoadImage(url, null);
+	public void LoadSprite (string url, Action<Sprite> onLoadComplete) {
 		if(loadSpriteCallbacks.ContainsKey(url))
 			loadSpriteCallbacks[url] += onLoadComplete;
 		else
 			loadSpriteCallbacks.Add(url, onLoadComplete);
+		LoadTexture(url, null);
 	}
 
-	static public void LoadImage (string url, Action<Texture> onLoadComplete) {
+	public void LoadTexture (string url, Action<Texture> onLoadComplete) {
 		Texture texture = null;
 		if(!cache.TryGetValue(url, out texture)) {
-			WWW w = new WWW(url);
-			inprogressWWW.Add(url, w);
 			if(loadTextureCallbacks.ContainsKey(url))
 				loadTextureCallbacks[url] += onLoadComplete;
 			else
 				loadTextureCallbacks.Add(url, onLoadComplete);
+			WWW w = new WWW(url);
+			inprogressWWW.Add(url, w);
 		}
 		else {
 			if(onLoadComplete != null)
@@ -40,9 +41,10 @@ public class ImageFactory : MonoBehaviour {
 		foreach(KeyValuePair<string, WWW> www in inprogressWWW) {
 			string url = www.Key;
 			WWW wVal = www.Value;
-			if(wVal.isDone) {
+			if(wVal != null && wVal.isDone) {
 				doneWWW.Add(url);
-				loadTextureCallbacks[url](wVal.texture);
+				if(loadTextureCallbacks[url] != null)
+					loadTextureCallbacks[url](wVal.texture);
 				if(loadSpriteCallbacks.ContainsKey(url)) {
 					loadSpriteCallbacks[www.Key](Sprite.Create(wVal.texture, GetTextureRect(wVal.texture), centerPivot));
 				}

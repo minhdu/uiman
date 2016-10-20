@@ -31,7 +31,7 @@ namespace UnuGames.MVVM
 		{
 			if (newImage == null)
 				return;
-			ImageFactory.LoadSprite (Application.persistentDataPath + resourcePath + newImage.ToString (), OnLoadComplete);
+			ImageFactory.Instance.LoadSprite ("file:///" + Application.persistentDataPath + resourcePath + newImage.ToString (), OnLoadComplete);
 		}
 
 		void OnLoadComplete (Sprite sprite)
