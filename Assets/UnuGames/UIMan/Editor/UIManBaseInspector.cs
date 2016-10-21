@@ -60,9 +60,28 @@ namespace UnuGames
 			uiManBase.motionShow = (UIMotion)EditorGUILayout.EnumPopup (show, uiManBase.motionShow);
 			uiManBase.motionHide = (UIMotion)EditorGUILayout.EnumPopup (hide, uiManBase.motionHide);
 			uiManBase.motionIdle = (UIMotion)EditorGUILayout.EnumPopup (idle, uiManBase.motionIdle);
-			if (uiManBase.motionIdle != UIMotion.CUSTOM_MECANIM_ANIMATION && uiManBase.motionIdle != UIMotion.NONE) {
-				EditorGUILayout.LabelField ("<color=red> Idle motion is now only support Mecanim animation!</color>", EditorGUIHelper.RichText (true));
+			
+			UIMotion[] motions = new UIMotion[3] {uiManBase.motionShow, uiManBase.motionHide, uiManBase.motionIdle};
+			bool haveMecanimAnim = false;
+			bool haveTweenAnim = false;
+			foreach (UIMotion m in motions) {
+				if ((int)m == 7)
+					haveMecanimAnim = true;
+				else
+					haveTweenAnim = true;
 			}
+			if(haveTweenAnim && haveMecanimAnim) {
+				GUILayout.BeginHorizontal ("Box");
+				EditorGUILayout.LabelField ("<color=red><b>Watning: </b>Your motion type is not match with each others so it maybe cause unexpected error!\nPlease select all motion type as Mecanim if you want to make you animation manually with Unity animation editor!</color>", EditorGUIHelper.RichText (true));
+				GUILayout.EndHorizontal ();
+			}
+			
+			if (uiManBase.motionIdle != UIMotion.CUSTOM_MECANIM_ANIMATION && uiManBase.motionIdle != UIMotion.NONE) {
+				GUILayout.BeginHorizontal ("Box");
+				EditorGUILayout.LabelField ("<color=red><b>Watning: </b>Idle motion is now only support Mecanim animation!</color>", EditorGUIHelper.RichText (true));
+				GUILayout.EndHorizontal ();
+			}
+
 			uiManBase.animTime = EditorGUILayout.FloatField (time, uiManBase.animTime);
 			uiManBase.showPosition = EditorGUILayout.Vector3Field (position, uiManBase.showPosition);
 

@@ -28,7 +28,6 @@ namespace UnuGames
 			if (stateInfo.normalizedTime >= 1.0f) {
 				if (cachedUI == null)
 					cachedUI = animator.GetComponent<UIManBase> ();
-
 				if (cachedUI.GetUIBaseType () == UIBaseType.DIALOG) {
 					if (isResetDialogTransitionStatus)
 						UIMan.Instance.IsInDialogTransition = false;
@@ -36,12 +35,8 @@ namespace UnuGames
 						UIMan.Instance.DequeueDialog ();
 				}
 
-				animator.enabled = false;
-
-				if (type == UIAnimationType.SHOW)
-					cachedUI.UnlockInput ();
-
 				if (type == UIAnimationType.SHOW) {
+					cachedUI.UnlockInput ();
 					cachedUI.OnShowComplete ();
 				} else if (type == UIAnimationType.HIDE) {
 					cachedUI.OnHideComplete ();

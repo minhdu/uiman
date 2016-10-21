@@ -650,8 +650,10 @@ namespace UnuGames
 			if (ui.motionShow == UIMotion.CUSTOM_MECANIM_ANIMATION) { //Custom animation use animator
 				ui.animRoot.EnableAndPlay (UIManDefine.ANIM_SHOW);
 			} else if (ui.motionShow == UIMotion.CUSTOM_SCRIPT_ANIMATION) { //Custom animation use overrided function
+				ui.animRoot.enabled = false;				
 				StartCoroutine (DelayDequeueDialog (ui.AnimationShow (), ui, true));
 			} else { // Simple tween
+				ui.animRoot.enabled = false;
 				Vector3 initPos = GetTargetPosition (ui.motionShow, UIManDefine.ARR_SHOW_TARGET_POS);
 			
 				ui.RectTrans.localPosition = initPos;
@@ -688,9 +690,12 @@ namespace UnuGames
 			if (ui.motionHide == UIMotion.CUSTOM_MECANIM_ANIMATION) { //Custom animation use animator
 				ui.animRoot.EnableAndPlay (UIManDefine.ANIM_HIDE);
 			} else if (ui.motionHide == UIMotion.CUSTOM_SCRIPT_ANIMATION) { //Custom animation use overrided function
+				ui.animRoot.enabled = false;
 				StartCoroutine (DelayDequeueDialog (ui.AnimationHide (), ui, false));
 			} else { // Simple tween
 
+				ui.animRoot.enabled = false;
+			
 				// Stop current tween if exist
 				LeanTween.cancel (ui.gameObject);
 				LeanTween.cancel (bgRectTrans.gameObject);
@@ -728,9 +733,11 @@ namespace UnuGames
 			if (ui.motionIdle == UIMotion.CUSTOM_MECANIM_ANIMATION) { //Custom animation use animator
 				ui.animRoot.EnableAndPlay (UIManDefine.ANIM_IDLE);
 			} else if (ui.motionHide == UIMotion.CUSTOM_SCRIPT_ANIMATION) { //Custom animation use overrided function
+				ui.animRoot.enabled = false;
 				StartCoroutine (DelayDequeueDialog (ui.AnimationIdle (), ui, false));
 			} else { // Simple tween
-				//UnuUnuLogger.Log("UIMan does not support simple tween animation for idle yet!");
+				ui.animRoot.enabled = false;
+				UnuLogger.LogWarning("UIMan does not support simple tween animation for idle yet!");
 			}
 		}
 
