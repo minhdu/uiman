@@ -6,7 +6,7 @@ public class TestExample2 : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		UIMan.Instance.ShowDialog<UIExample2> (new UICallback(OnClose1, OnClose2), "Message", "Close", Color.green, "uiman-icon-1", false, 1000, "uiman-icon-1.png");
+		UIMan.Instance.ShowDialog<UIExample2> (new UICallback(OnClose1, OnClose2), "Message", "Close", Color.green, "uiman-icon-1", true, 1000, "uiman-icon-1.png");
 	}
 	
 	void OnClose1 (object[] args) {

@@ -27,6 +27,10 @@ namespace UnuGames {
 		[HideInInspector]
 		public DataContext mDataContext;
 
+		void Awake () {
+			Init ();
+		}
+
         /// <summary>
         /// Find the Data Context for this binder
         /// </summary>

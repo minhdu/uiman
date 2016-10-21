@@ -45,15 +45,24 @@ public partial class UIExample2 : UIManDialog {
 	// Your custom code here
 	public void Close1 () {
 		this.Callback (0, "This is callback from dialog button 1!");
+		UIMan.Loading.Show (WaitAbit ());
+	}
+
+	IEnumerator WaitAbit () {
+		yield return new WaitForSeconds (10);
 	}
 
 	public void Close2 () {
-		this.Callback (1, "This is callback from dialog button 2!");
-		UIMan.Loading.Show (WaitSomething());
+		//this.Callback (1, "This is callback from dialog button 2!");
+		UIMan.Loading.Show (true, true, false, true, "I love you!");
+		StartCoroutine (ShowNextTip ());
 	}
 
-	IEnumerator WaitSomething () {
-		yield return new WaitForSeconds (2);
+	IEnumerator ShowNextTip () {
+		yield return new WaitForSeconds (1);
+		UIMan.Loading.ShowImage ("Images/background4");
+		UIMan.Loading.ShowTip ("You love me!");
+		UIMan.Loading.ShowValue ("100%");
 	}
 
 	public void Log () {

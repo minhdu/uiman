@@ -147,6 +147,10 @@ namespace UnuGames
 			ResourceFactory.LoadAsync<Sprite> (spritePath, OnLoadBackground);
 		}
 
+		public void HideImage () {
+			backgroundImage.enabled = false;
+		}
+
 		void OnLoadBackground (Sprite sprite, object[] args) {
 			backgroundImage.sprite = sprite;
 		}
