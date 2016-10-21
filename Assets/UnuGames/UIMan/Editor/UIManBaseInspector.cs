@@ -72,13 +72,13 @@ namespace UnuGames
 			}
 			if(haveTweenAnim && haveMecanimAnim) {
 				GUILayout.BeginHorizontal ("Box");
-				EditorGUILayout.LabelField ("<color=red><b>Watning: </b>Your motion type is not match with each others so it maybe cause unexpected error!\nPlease select all motion type as Mecanim if you want to make you animation manually with Unity animation editor!</color>", EditorGUIHelper.RichText (true));
+				EditorGUILayout.LabelField ("<color=red><b>Warning: </b>Your motion type is not match with each others so it maybe cause unexpected error!\nPlease select all motion type as Mecanim if you want to make you animation manually with Unity animation editor!</color>", EditorGUIHelper.RichText (true));
 				GUILayout.EndHorizontal ();
 			}
 			
 			if (uiManBase.motionIdle != UIMotion.CUSTOM_MECANIM_ANIMATION && uiManBase.motionIdle != UIMotion.NONE) {
 				GUILayout.BeginHorizontal ("Box");
-				EditorGUILayout.LabelField ("<color=red><b>Watning: </b>Idle motion is now only support Mecanim animation!</color>", EditorGUIHelper.RichText (true));
+				EditorGUILayout.LabelField ("<color=red><b>Warning: </b>Idle motion is now only support Mecanim animation!</color>", EditorGUIHelper.RichText (true));
 				GUILayout.EndHorizontal ();
 			}
 
