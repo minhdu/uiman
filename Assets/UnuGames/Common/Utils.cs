@@ -56,5 +56,11 @@ namespace UnuGames {
 				animator.Play(Animator.StringToHash(stateName), 0, 0);
 			}
 		}
+
+		static public void Disable (this Animator animator) {
+			if (animator != null) {
+				animator.enabled = false;
+			}
+		}
 	}
 }
