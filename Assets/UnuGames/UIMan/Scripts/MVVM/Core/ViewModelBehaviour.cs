@@ -45,7 +45,8 @@ namespace UnuGames {
             {
                 try
                 {
-                    actions(value);
+					if(actions != null)
+                    	actions(value);
                 }
                 catch(Exception e)
                 {
@@ -56,6 +57,10 @@ namespace UnuGames {
                 //UnuLogger.LogWarning(BindingDefine.NO_BINDER_REGISTERED);
             }
         }
+
+		void SafeInvoke (Action<object> actions, object value) {
+			
+		}
 
 		/// <summary>
 		/// Raise the change event automatically without name and value,

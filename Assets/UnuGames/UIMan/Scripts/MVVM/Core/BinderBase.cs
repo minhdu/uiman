@@ -89,10 +89,6 @@ namespace UnuGames {
 		/// </summary>
         public abstract void Init ();
 
-        void Awake () {
-            Init();
-        }
-
         /// <summary>
         /// All binder must implement this method to unsubsribe onchanged event when object is disable
         /// </summary>

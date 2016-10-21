@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace UnuGames {
 
@@ -16,6 +17,8 @@ namespace UnuGames {
 		public string propertyName;
 		PropertyInfo propertyInfo;
 
+		List<BinderBase> refBinders = new List<BinderBase>();
+
         public void Clear () {
             viewModel = null;
 			propertyName = null;
@@ -23,6 +26,8 @@ namespace UnuGames {
         }
 
 		void Awake () {
+
+			// Subscript for property change event
 			GetPropertyInfo ();
 			if (propertyInfo != null) {
 				model = propertyInfo.GetValue (viewModel, null);
@@ -30,6 +35,16 @@ namespace UnuGames {
 					model = ReflectUtils.GetCachedTypeInstance (propertyInfo.PropertyType);
 				if(model != null)
 					viewModel.SubcriptObjectAction (model);
+			}
+
+			// Register binding message for child binders
+			BinderBase[] binders = GetComponentsInChildren<BinderBase> ();
+			for (int i = 0; i < binders.Length; i++) {
+				BinderBase binder = binders [i];
+				if (binder.mDataContext == this) {
+					refBinders.Add (binder);
+					binder.Init ();
+				}
 			}
 		}
 

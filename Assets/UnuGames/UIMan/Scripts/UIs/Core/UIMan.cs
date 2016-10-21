@@ -626,7 +626,9 @@ namespace UnuGames
 		/// <param name="texture">Texture.</param>
 		void SetScreenBackground (Texture2D texture, object[] args)
 		{
-			background.sprite = Sprite.Create (texture, new Rect (0, 0, texture.width, texture.height), Vector2.zero);
+			if (texture != null) {
+				background.sprite = Sprite.Create (texture, new Rect (0, 0, texture.width, texture.height), Vector2.zero);
+			}
 			LeanTween.alpha (bgRectTrans, 1, 0.25f).setEase (LeanTweenType.linear);
 		}
 

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
+using System;
 
 public class AsyncResourcesLoader : MonoBehaviour
 {
@@ -12,13 +12,13 @@ public class AsyncResourcesLoader : MonoBehaviour
 		DontDestroyOnLoad (gameObject);
 	}
 
-	public void Load<T> (string path, System.Action<T> onLoaded) where T : Object
+	public void Load<T> (string path, Action<T> onLoaded) where T : UnityEngine.Object
 	{
 		mPath = path;
 		StartCoroutine (LoadAsync<T> (onLoaded));
 	}
 
-	IEnumerator LoadAsync<T> (System.Action<T> onLoaded) where T : Object
+	IEnumerator LoadAsync<T> (Action<T> onLoaded) where T : UnityEngine.Object
 	{
 		ResourceRequest request = Resources.LoadAsync<T> (mPath);
 		yield return request;
