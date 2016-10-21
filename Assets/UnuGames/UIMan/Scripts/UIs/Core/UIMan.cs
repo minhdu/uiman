@@ -18,6 +18,8 @@ namespace UnuGames
 	[StartupAttribute (StartupType.PREFAB)]
 	public class UIMan : SingletonBehaviour<UIMan>
 	{
+		// Constants
+		const string LOADING_INDICATOR_NAME = "UILoadingIndicator";
 
 		// Configuration
 		UIManConfig config;
@@ -72,8 +74,13 @@ namespace UnuGames
 
 		static public UILoading Loading {
 			get {
-				if (_uiLoading == null)
-					_uiLoading = Instance.GetComponentInChildren<UILoading> (true);
+				if (_uiLoading == null) {
+					GameObject loadingObj = ResourceFactory.Load<GameObject> (LOADING_INDICATOR_NAME);
+					loadingObj = Instantiate (loadingObj) as GameObject;
+					loadingObj.name = LOADING_INDICATOR_NAME;
+					_uiLoading = loadingObj.GetComponent<UILoading> ();
+					_uiLoading.Setup (UIMan.Instance.transform);
+				}
 				return _uiLoading;
 			}
 		}
@@ -396,7 +403,7 @@ namespace UnuGames
 		{
 			Instance.cover.gameObject.SetActive (false);
 			if (showLoading)
-				Loading.Show (SceneManager.LoadSceneAsync (name), true, "", OnLoadUnitySceneComplete, screen, args);
+				Loading.Show (SceneManager.LoadSceneAsync (name), true, false, false, false, "", OnLoadUnitySceneComplete, screen, args);
 			else
 				StartCoroutine (LoadUnityScene (name, screen, args));
 		}

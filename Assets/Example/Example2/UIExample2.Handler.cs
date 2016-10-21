@@ -49,7 +49,7 @@ public partial class UIExample2 : UIManDialog {
 
 	public void Close2 () {
 		this.Callback (1, "This is callback from dialog button 2!");
-		UIMan.Loading.Show ();
+		UIMan.Loading.Show (WaitSomething());
 	}
 
 	IEnumerator WaitSomething () {

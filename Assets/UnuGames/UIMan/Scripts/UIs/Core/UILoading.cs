@@ -7,12 +7,13 @@ namespace UnuGames
 {
 	public class UILoading : MonoBehaviour
 	{
-
-		public GameObject loadingIndicator;
-		public GameObject image;
+		const string LOADING_TEXT = "Loading...";
+		public GameObject loadingIcon;
+		public Image backgroundImage;
 		public Image loadingCover;
 		public Text progressValue;
 		public Text tipText;
+
 		AsyncOperation asyncLoading;
 		IEnumerator coroutineLoading;
 		WWW wwwLoading;
@@ -20,81 +21,101 @@ namespace UnuGames
 		Action<object[]> loadingCallback;
 		object[] loadingCallbackArgs;
 
+		public void Setup (Transform root) {
+			transform.SetParent (root, false);
+
+		}
+
+		IEnumerator WaitTask (IEnumerator coroutine) {
+			yield return StartCoroutine (coroutine);
+			DoCallback ();
+			Hide ();
+		}
+
+		IEnumerator WaitTask (AsyncOperation asyncTask) {
+			yield return asyncTask;
+			DoCallback ();
+			Hide ();
+		}
+
+		IEnumerator WaitTask (WWW www) {
+			yield return www;
+			DoCallback ();
+			Hide ();
+		}
+
+		void DoCallback () {
+			if (loadingCallback != null) {
+				loadingCallback (loadingCallbackArgs);
+				loadingCallback = null;
+			}
+		}
+
 		void Update ()
 		{
+			return;
 			if (asyncLoading != null && asyncLoading.isDone && isLoading) {
-				Hide ();
 				if (loadingCallback != null) {
 					loadingCallback (loadingCallbackArgs);
 					loadingCallback = null;
 				}
-			}
-			if (coroutineLoading != null && !coroutineLoading.MoveNext () && isLoading) {
 				Hide ();
-				if (loadingCallback != null) {
-					loadingCallback (loadingCallbackArgs);
-					loadingCallback = null;
-				}
 			}
 			if (wwwLoading != null) {
 				if (wwwLoading.isDone && isLoading) {
-					Hide ();
 					if (loadingCallback != null) {
 						loadingCallback (loadingCallbackArgs);
 						loadingCallback = null;
 					}
+					Hide ();
 				} else {
 					ShowValue (Mathf.FloorToInt (wwwLoading.progress * 100).ToString () + "%");
 				}
 			}
 		}
 
-		public void Show (bool showCover = true, bool showImage = false)
-		{
-			progressValue.fontSize = 20;
-			progressValue.text = "Loading...";
-			isLoading = true;
-			loadingIndicator.SetActive (true);
+		void Setting (bool showIcon, bool showCover, bool showBackground, bool showProgress, string tip) {
+			loadingIcon.SetActive (showIcon);
 			loadingCover.enabled = showCover;
-			image.SetActive (showImage);
+			backgroundImage.enabled  = showBackground;
+			progressValue.enabled = showProgress;
+			tipText.text = tip;
+		}
+
+		public void Show (bool showIcon = true, bool showCover = true, bool showBackground = false, bool showProgress = false, string tip = "")
+		{
+			isLoading = true;
+			Setting(showIcon, showCover, showBackground, showProgress, tip);
 		}
 	
-		public void Show (AsyncOperation task, bool showCover = true, string tip = "", Action<object[]> callBacks = null, params object[] args)
+		public void Show (AsyncOperation task, bool showIcon = true, bool showCover = true, bool showBackground = false, bool showProgress = false, string tip = "", Action<object[]> callBacks = null, params object[] args)
 		{
-			progressValue.fontSize = 20;
-			progressValue.text = "Loading...";
-			ShowTip (tip);
 			loadingCallback = callBacks;
 			loadingCallbackArgs = args;
 			asyncLoading = task;
 			isLoading = true;
-			loadingIndicator.SetActive (true);
-			loadingCover.enabled = showCover;
+			Setting(showIcon, showCover, showBackground, showProgress, tip);
+			StartCoroutine (WaitTask (task));
 		}
 
-		public void Show (IEnumerator task, bool showCover = true, string tip = "", Action<object[]> callBacks = null, params object[] args)
+		public void Show (IEnumerator task, bool showIcon = true, bool showCover = true, bool showBackground = false, bool showProgress = false, string tip = "", Action<object[]> callBacks = null, params object[] args)
 		{
-			progressValue.fontSize = 20;
-			progressValue.text = "Loading...";
-			ShowTip (tip);
 			loadingCallback = callBacks;
 			loadingCallbackArgs = args;
 			coroutineLoading = task;
 			isLoading = true;
-			loadingIndicator.SetActive (true);
-			loadingCover.enabled = showCover;
+			Setting(showIcon, showCover, showBackground, showProgress, tip);
+			StartCoroutine (WaitTask (task));
 		}
 
-		public void Show (WWW www, bool showCover = true, string tip = "", Action<object[]> callBacks = null, params object[] args)
+		public void Show (WWW www, bool showIcon = true, bool showCover = true, bool showBackground = false, bool showProgress = false, string tip = "", Action<object[]> callBacks = null, params object[] args)
 		{
-			progressValue.fontSize = 32;
-			ShowTip (tip);
 			loadingCallback = callBacks;
 			loadingCallbackArgs = args;
 			wwwLoading = www;
 			isLoading = true;
-			loadingIndicator.SetActive (true);
-			loadingCover.enabled = showCover;
+			Setting(showIcon, showCover, showBackground, showProgress, tip);
+			StartCoroutine (WaitTask (www));
 		}
 
 		public void Hide ()
@@ -103,8 +124,7 @@ namespace UnuGames
 			coroutineLoading = null;
 			wwwLoading = null;
 			isLoading = false;
-			loadingIndicator.SetActive (false);
-			loadingCover.enabled = false;
+			Setting (false, false, false, false, "");
 		}
 
 		public void ShowTip (string tip)
@@ -115,6 +135,20 @@ namespace UnuGames
 		public void ShowValue (string value)
 		{
 			progressValue.text = value;
+		}
+
+		public void ShowImage (Sprite sprite) {
+			backgroundImage.enabled = true;
+			backgroundImage.sprite = sprite;
+		}
+
+		public void ShowImage (string spritePath) {
+			backgroundImage.enabled = true;
+			ResourceFactory.LoadAsync<Sprite> (spritePath, OnLoadBackground);
+		}
+
+		void OnLoadBackground (Sprite sprite, object[] args) {
+			backgroundImage.sprite = sprite;
 		}
 	}
 }
