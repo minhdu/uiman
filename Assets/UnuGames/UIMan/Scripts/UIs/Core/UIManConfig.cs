@@ -8,6 +8,7 @@ public class UIManConfig : ScriptableObject {
 	public string backgroundRootFolder;
 
 #if UNITY_EDITOR
+	public string modelScriptFolder;
 	public string dialogScriptFolder;
 	public string screenScriptFolder;
 	public string selectedType;

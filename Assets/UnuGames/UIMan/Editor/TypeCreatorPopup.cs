@@ -47,7 +47,9 @@ namespace UnuGames
 				string lastPath = "";
 				UIManConfig uiManConfig = Resources.Load<UIManConfig> ("UIManConfig");
 				if (uiManConfig != null) {
-					if(baseTypePopup.SelectedItem == arrSupportType[1])
+					if(baseTypePopup.SelectedItem == arrSupportType[0])
+						lastPath = uiManConfig.modelScriptFolder;
+					else if(baseTypePopup.SelectedItem == arrSupportType[1])
 						lastPath = uiManConfig.screenScriptFolder;
 					else if(baseTypePopup.SelectedItem == arrSupportType[2])
 						lastPath = uiManConfig.dialogScriptFolder;
@@ -59,7 +61,9 @@ namespace UnuGames
 					typeName = Path.GetFileNameWithoutExtension (lastPath);
 
 					lastPath = Path.GetDirectoryName (lastPath).Replace(Application.dataPath, "");
-					if(baseTypePopup.SelectedItem == arrSupportType[1])
+					if(baseTypePopup.SelectedItem == arrSupportType[0])
+						uiManConfig.modelScriptFolder = lastPath;
+					else if(baseTypePopup.SelectedItem == arrSupportType[1])
 						uiManConfig.screenScriptFolder = lastPath;
 					else if(baseTypePopup.SelectedItem == arrSupportType[2])
 						uiManConfig.dialogScriptFolder = lastPath;
@@ -89,8 +93,11 @@ namespace UnuGames
 			UIManConfig config = Resources.Load<UIManConfig> ("UIManConfig");
 			
 			string savePath = "";
-			if (baseType.Equals (UIGenerator.GetSupportTypeName (1))) {
-				savePath = config.screenScriptFolder;
+			if (baseType.Equals (UIGenerator.GetSupportTypeName (0))) {
+				savePath = config.modelScriptFolder;
+			}
+			else if (baseType.Equals (UIGenerator.GetSupportTypeName (1))) {
+					savePath = config.screenScriptFolder;
 			} else if (baseType.Equals (UIGenerator.GetSupportTypeName (2))) {
 				savePath = config.dialogScriptFolder;
 			}
