@@ -3,10 +3,10 @@ using System.Collections;
 
 namespace UnuGames
 {
-	public class UIManModule<T> : ViewModelBehaviour, IModule
+	public class UIManModule<T> : ViewModelBehaviour, IModule where T : new()
 	{
 
-		T _dataInstance = default(T);
+		T _dataInstance = new T();
 
 		[UIManProperty]
 		public virtual T DataInstance {

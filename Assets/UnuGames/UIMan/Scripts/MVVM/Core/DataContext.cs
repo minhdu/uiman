@@ -16,6 +16,11 @@ namespace UnuGames {
 
 		public string propertyName;
 		PropertyInfo propertyInfo;
+		public PropertyInfo PropertyInfo {
+			get {
+				return propertyInfo;
+			}
+		}
 
 		List<BinderBase> refBinders = new List<BinderBase>();
 

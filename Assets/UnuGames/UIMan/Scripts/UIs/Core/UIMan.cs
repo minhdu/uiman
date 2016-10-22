@@ -737,7 +737,9 @@ namespace UnuGames
 				StartCoroutine (DelayDequeueDialog (ui.AnimationIdle (), ui, false));
 			} else { // Simple tween
 				ui.animRoot.Disable ();
-				UnuLogger.LogWarning("UIMan does not support simple tween animation for idle yet!");
+				if (ui.motionIdle != UIMotion.NONE && ui.motionIdle != UIMotion.HIDDEN) {
+					UnuLogger.LogWarning ("UIMan does not support simple tween animation for idle yet!");
+				}
 			}
 		}
 

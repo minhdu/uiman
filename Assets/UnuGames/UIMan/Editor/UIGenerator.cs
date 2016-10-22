@@ -141,35 +141,37 @@ namespace UnuGames
 
 					// Common
 					GUILayout.Space (2);
-					GUILayout.BeginHorizontal();
-					if (GUILayout.Button ("Edit UI", GUILayout.Height (30))) {
+					if (selectedType.BaseType != typeof(ObservableModel)) {
+						GUILayout.BeginHorizontal();
+						if (GUILayout.Button ("Edit UI", GUILayout.Height (30))) {
 
-						GameObject prefabInstance;
-						UnityEngine.Object obj = FindObjectOfType (selectedType);
-						if (obj != null) {
-							prefabInstance = ((MonoBehaviour)obj).gameObject;
-						} else {
+							GameObject prefabInstance;
+							UnityEngine.Object obj = FindObjectOfType (selectedType);
+							if (obj != null) {
+								prefabInstance = ((MonoBehaviour)obj).gameObject;
+							} else {
 
-							bool isDialog = selectedType.BaseType == typeof(UIManDialog);
-							string prefabFolder = GetUIPrefabPath (selectedType, isDialog);
-							string prefabFile = selectedType.Name + PREFAB_EXT;
-							string prefabPath = Path.Combine (prefabFolder, prefabFile);
-							GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject> (prefabPath);
-							if (prefab == null) {
-								prefab = FindAssetObject<GameObject> (selectedType.Name, PREFAB_EXT);
+								bool isDialog = selectedType.BaseType == typeof(UIManDialog);
+								string prefabFolder = GetUIPrefabPath (selectedType, isDialog);
+								string prefabFile = selectedType.Name + PREFAB_EXT;
+								string prefabPath = Path.Combine (prefabFolder, prefabFile);
+								GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject> (prefabPath);
+								if (prefab == null) {
+									prefab = FindAssetObject<GameObject> (selectedType.Name, PREFAB_EXT);
+								}
+
+								prefabInstance = PrefabUtility.InstantiatePrefab (prefab) as GameObject;
+								if (isDialog)
+									prefabInstance.transform.SetParent (UIMan.Instance.dialogRoot, false);
+								else
+									prefabInstance.transform.SetParent (UIMan.Instance.screenRoot, false);
 							}
-
-							prefabInstance = PrefabUtility.InstantiatePrefab (prefab) as GameObject;
-							if (isDialog)
-								prefabInstance.transform.SetParent (UIMan.Instance.dialogRoot, false);
-							else
-								prefabInstance.transform.SetParent (UIMan.Instance.screenRoot, false);
+							Selection.activeGameObject = prefabInstance;
 						}
-						Selection.activeGameObject = prefabInstance;
+						GUILayout.EndHorizontal ();
+						LineHelper.Draw (Color.gray);
 					}
-					GUILayout.EndHorizontal ();
-					LineHelper.Draw (Color.gray);
-
+						
 					// Base type
 					GUILayout.Space (10);
 					LableHelper.HeaderLabel ("Type");
