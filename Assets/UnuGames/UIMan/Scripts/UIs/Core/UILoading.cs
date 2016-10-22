@@ -7,23 +7,25 @@ namespace UnuGames
 {
 	public class UILoading : MonoBehaviour
 	{
-		const string LOADING_TEXT = "Loading...";
 		public GameObject loadingIcon;
 		public Image backgroundImage;
 		public Image loadingCover;
 		public Text progressValue;
 		public Text tipText;
 
-		AsyncOperation asyncLoading;
-		IEnumerator coroutineLoading;
-		WWW wwwLoading;
 		public bool isLoading = false;
 		Action<object[]> loadingCallback;
 		object[] loadingCallbackArgs;
 
+		float progress;
+		public float Progress {
+			get {
+				return progress;
+			}
+		}
+
 		public void Setup (Transform root) {
 			transform.SetParent (root, false);
-
 		}
 
 		IEnumerator WaitTask (IEnumerator coroutine) {
@@ -33,13 +35,23 @@ namespace UnuGames
 		}
 
 		IEnumerator WaitTask (AsyncOperation asyncTask) {
-			yield return asyncTask;
+			while (!asyncTask.isDone) {
+				progress = asyncTask.progress;
+				if (progressValue.enabled)
+					ShowValue (Mathf.FloorToInt (progress).ToString() + "%");
+				yield return null;
+			}
 			DoCallback ();
 			Hide ();
 		}
 
 		IEnumerator WaitTask (WWW www) {
-			yield return www;
+			while (!www.isDone) {
+				progress = www.progress;
+				if (progressValue.enabled)
+					ShowValue (Mathf.FloorToInt (progress).ToString() + "%");
+				yield return null;
+			}
 			DoCallback ();
 			Hide ();
 		}
@@ -48,29 +60,6 @@ namespace UnuGames
 			if (loadingCallback != null) {
 				loadingCallback (loadingCallbackArgs);
 				loadingCallback = null;
-			}
-		}
-
-		void Update ()
-		{
-			return;
-			if (asyncLoading != null && asyncLoading.isDone && isLoading) {
-				if (loadingCallback != null) {
-					loadingCallback (loadingCallbackArgs);
-					loadingCallback = null;
-				}
-				Hide ();
-			}
-			if (wwwLoading != null) {
-				if (wwwLoading.isDone && isLoading) {
-					if (loadingCallback != null) {
-						loadingCallback (loadingCallbackArgs);
-						loadingCallback = null;
-					}
-					Hide ();
-				} else {
-					ShowValue (Mathf.FloorToInt (wwwLoading.progress * 100).ToString () + "%");
-				}
 			}
 		}
 
@@ -92,7 +81,6 @@ namespace UnuGames
 		{
 			loadingCallback = callBacks;
 			loadingCallbackArgs = args;
-			asyncLoading = task;
 			isLoading = true;
 			Setting(showIcon, showCover, showBackground, showProgress, tip);
 			StartCoroutine (WaitTask (task));
@@ -102,7 +90,6 @@ namespace UnuGames
 		{
 			loadingCallback = callBacks;
 			loadingCallbackArgs = args;
-			coroutineLoading = task;
 			isLoading = true;
 			Setting(showIcon, showCover, showBackground, showProgress, tip);
 			StartCoroutine (WaitTask (task));
@@ -112,7 +99,6 @@ namespace UnuGames
 		{
 			loadingCallback = callBacks;
 			loadingCallbackArgs = args;
-			wwwLoading = www;
 			isLoading = true;
 			Setting(showIcon, showCover, showBackground, showProgress, tip);
 			StartCoroutine (WaitTask (www));
@@ -120,9 +106,6 @@ namespace UnuGames
 
 		public void Hide ()
 		{
-			asyncLoading = null;
-			coroutineLoading = null;
-			wwwLoading = null;
 			isLoading = false;
 			Setting (false, false, false, false, "");
 		}

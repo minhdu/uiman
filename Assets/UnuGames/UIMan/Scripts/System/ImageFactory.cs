@@ -27,8 +27,10 @@ public class ImageFactory : SingletonBehaviour<ImageFactory> {
 				loadTextureCallbacks[url] += onLoadComplete;
 			else
 				loadTextureCallbacks.Add(url, onLoadComplete);
-			WWW w = new WWW(url);
-			inprogressWWW.Add(url, w);
+			if (!inprogressWWW.ContainsKey (url)) {
+				WWW w = new WWW (url);
+				inprogressWWW.Add (url, w);
+			}
 		}
 		else {
 			if(onLoadComplete != null)

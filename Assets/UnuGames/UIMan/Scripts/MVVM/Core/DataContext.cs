@@ -31,14 +31,14 @@ namespace UnuGames {
 			GetPropertyInfo ();
 			if (propertyInfo != null) {
 				model = propertyInfo.GetValue (viewModel, null);
-				if (model == null)
+				if (model == null && type == ContextType.PROPERTY)
 					model = ReflectUtils.GetCachedTypeInstance (propertyInfo.PropertyType);
 				if(model != null)
 					viewModel.SubcriptObjectAction (model);
 			}
 
 			// Register binding message for child binders
-			BinderBase[] binders = GetComponentsInChildren<BinderBase> ();
+			BinderBase[] binders = GetComponentsInChildren<BinderBase> (true);
 			for (int i = 0; i < binders.Length; i++) {
 				BinderBase binder = binders [i];
 				if (binder.mDataContext == this) {
