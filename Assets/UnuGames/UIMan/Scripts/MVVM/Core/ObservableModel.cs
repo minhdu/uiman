@@ -11,6 +11,29 @@ namespace UnuGames
 		Dictionary<string, PropertyInfo> propertyCache = new Dictionary<string, PropertyInfo> ();
 
 		/// <summary>
+		/// Initializes a new instance of the <see cref="UnuGames.ObservableModel"/> class.
+		/// </summary>
+		static public T New<T> () where T : ObservableModel {
+			return (T)new ObservableModel ();
+		} 
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="UnuGames.ObservableModel"/> class.
+		/// </summary>
+		/// <param name="instance">Instance.</param>
+		static public T New<T> (T instance) where T : ObservableModel, new() {
+			Dictionary<string, Action<object>> actionDict = instance.actionDict;
+			Dictionary<string, PropertyInfo> propertyCache = instance.propertyCache;
+			instance = new T ();
+			instance.actionDict = actionDict;
+			foreach (KeyValuePair<string, PropertyInfo> prop in propertyCache) {
+				instance.propertyCache.Add (prop.Key, instance.GetType ().GetProperty (prop.Value.Name));
+			}
+
+			return instance;
+		}
+
+		/// <summary>
 		/// Notify the property which has change to all binder that has been subcribed with property name and value.
 		/// </summary>
 		/// <param name="propertyName"></param>
@@ -18,9 +41,16 @@ namespace UnuGames
 		public virtual void NotifyPropertyChanged (string propertyName, object value)
 		{
 			Action<object> actions = null;
-			UnityEngine.Debug.LogError ("change " + propertyName);
 			if (actionDict.TryGetValue (propertyName, out actions)) {
-				actions (value);
+				try
+				{
+					if(actions != null)
+						actions(value);
+				}
+				catch(Exception e)
+				{
+					UnuLogger.LogError(e.Message);
+				}
 			} else {
 				UnuLogger.LogWarning (BindingDefine.NO_BINDER_REGISTERED);
 			}
