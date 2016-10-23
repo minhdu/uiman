@@ -29,42 +29,38 @@ namespace UnuGames
 		MemberInfo sourceMember;
 		Vector3 hidePosition = new Vector3 (10000, 0, 0);
 
-		public override void Init ()
+		public override void Init (bool forceInit)
 		{
-			if (!Application.isPlaying)
-				return;
-			if (isInit)
-				return;
-			isInit = true;
+			if (CheckInit (forceInit)) {
+				InitPool ();
 
-			InitPool ();
+				scrollRect = GetComponent<ScrollRect> ();
+				RectTransform contentRect = contentPrefab.GetComponent<RectTransform> ();
+				if (contentWidth == 0)
+					contentWidth = contentRect.sizeDelta.x;
+				if (contentHeight == 0)
+					contentHeight = contentRect.sizeDelta.y;
 
-			scrollRect = GetComponent<ScrollRect> ();
-			RectTransform contentRect = contentPrefab.GetComponent<RectTransform> ();
-			if (contentWidth == 0)
-				contentWidth = contentRect.sizeDelta.x;
-			if (contentHeight == 0)
-				contentHeight = contentRect.sizeDelta.y;
+				sourceMember = mDataContext.viewModel.GetMemberInfo (observableList.member);
+				if (sourceMember is FieldInfo) {
+					FieldInfo sourceField = sourceMember.ToField ();
+					dataList = (IObservaleCollection)sourceField.GetValue (mDataContext.viewModel);
 
-			sourceMember = mDataContext.viewModel.GetMemberInfo (observableList.member);
-			if (sourceMember is FieldInfo) {
-				FieldInfo sourceField = sourceMember.ToField ();
-				dataList = (IObservaleCollection)sourceField.GetValue (mDataContext.viewModel);
+				} else {
+					PropertyInfo sourceProperty = sourceMember.ToProperty ();
+					dataList = (IObservaleCollection)sourceProperty.GetValue (mDataContext.viewModel, null);
+				}
+				if (dataList != null) {
+					dataList.OnAddObject += HandleOnAdd;
+					dataList.OnRemoveObject += HandleOnRemove;
+					dataList.OnInsertObject += HandleOnInsert;
+					dataList.OnClearObjects += HandleOnClear;
+					dataList.OnChangeObject += HandleOnChange;
+				}
+				scrollRect.onValueChanged.AddListener (OnScroll);
 
-			} else {
-				PropertyInfo sourceProperty = sourceMember.ToProperty ();
-				dataList = (IObservaleCollection)sourceProperty.GetValue (mDataContext.viewModel, null);
+				contentPrefab.SetActive (false);
 			}
-			if (dataList != null) {
-				dataList.OnAddObject += HandleOnAdd;
-				dataList.OnRemoveObject += HandleOnRemove;
-				dataList.OnInsertObject += HandleOnInsert;
-				dataList.OnClearObjects += HandleOnClear;
-				dataList.OnChangeObject += HandleOnChange;
-			}
-			scrollRect.onValueChanged.AddListener (OnScroll);
-
-			contentPrefab.SetActive (false);
 		}
 
 		#region Pooling
@@ -175,7 +171,7 @@ namespace UnuGames
 
 		void RecalculatePosition (int startIndex = 0)
 		{
-			for (int i = startIndex - 1; i < dataList.Count; i++) {
+			for (int i = startIndex-1; i < dataList.Count; i++) {
 				Vector2 position = Vector2.zero;
 				if (scrollRect.horizontal) {
 					position.x = i * contentWidth + (i + 1) * contentSpacing;

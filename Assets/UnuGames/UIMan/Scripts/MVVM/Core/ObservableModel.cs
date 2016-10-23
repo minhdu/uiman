@@ -62,6 +62,9 @@ namespace UnuGames
 		/// </summary>
 		public void OnPropertyChanged ()
 		{
+			if(propertyCache.Count == 0)
+				DataContext.Rebind (this);
+
 			string propertyName = GetCaller ();
 			PropertyInfo property = null;
 			if (propertyCache.TryGetValue (propertyName, out property)) {
@@ -110,17 +113,17 @@ namespace UnuGames
 			}
 		}
 
+		/// <summary>
+		/// Sets the value.
+		/// </summary>
+		/// <param name="propertyName">Property name.</param>
+		/// <param name="value">Value.</param>
 		public void SetValue (string propertyName, object value)
 		{
 			PropertyInfo property = null;
 			if (propertyCache.TryGetValue (propertyName, out property)) {
 				property.SetValue (this, value, null);
 			}
-		}
-
-		public void NotifyAllChange ()
-		{
-		
 		}
 	}
 }

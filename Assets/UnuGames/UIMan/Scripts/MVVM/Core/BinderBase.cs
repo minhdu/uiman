@@ -87,7 +87,7 @@ namespace UnuGames {
 		/// <summary>
 		/// All binder must implement this method to initialize the binder's instance.
 		/// </summary>
-        public abstract void Init ();
+		public abstract void Init (bool forceInit = false);
 
         /// <summary>
         /// All binder must implement this method to unsubsribe onchanged event when object is disable
@@ -120,7 +120,7 @@ namespace UnuGames {
 		/// <param name="propertyName">Property name.</param>
 		void RegisterViewModel (string propertyName, Action<object> updateAction) {
 			if(mDataContext != null && !string.IsNullOrEmpty(propertyName)) {
-				if (mDataContext.model != null) {
+				if (mDataContext.model != null && mDataContext.model is ObservableModel) {
 					((ObservableModel)mDataContext.model).SubscribeAction (propertyName, updateAction);
 					mDataContext.viewModel.SubscribeAction (propertyName, updateAction);
 				} else {
@@ -168,10 +168,13 @@ namespace UnuGames {
             return fields;
         }
 
-		protected void CheckInit () {
-			if(isInit)
-				return;
+		protected bool CheckInit (bool forceInit) {
+			if (!Application.isPlaying)
+				return false;
+			if (isInit)
+				return forceInit;
 			isInit = true;
+			return true;
 		}
 
 		protected void SetValue(string memberName, object value) {

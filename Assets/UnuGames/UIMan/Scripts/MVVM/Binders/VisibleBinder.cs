@@ -12,11 +12,11 @@ namespace UnuGames
 		public BindingField
 			Value = new BindingField ("bool");
 
-		public override void Init ()
+		public override void Init (bool forceInit)
 		{
-			CheckInit ();
-
-			SubscribeOnChangedEvent (Value, OnUpdateValue);
+			if (CheckInit (forceInit)) {
+				SubscribeOnChangedEvent (Value, OnUpdateValue);
+			}
 		}
 
 		public void OnUpdateValue (object val)

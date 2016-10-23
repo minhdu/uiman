@@ -13,13 +13,13 @@ namespace UnuGames
 			Value = new BindingField ("float");
 		float timeChangeValue = 0.75f;
 
-		public override void Init ()
+		public override void Init (bool forceInit)
 		{
-			CheckInit ();
+			if (CheckInit (forceInit)) {
+				image = GetComponent<Image> ();
 
-			image = GetComponent<Image> ();
-
-			SubscribeOnChangedEvent (Value, OnUpdateValue);
+				SubscribeOnChangedEvent (Value, OnUpdateValue);
+			}
 		}
 
 		public void OnUpdateValue (object val)

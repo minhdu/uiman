@@ -13,13 +13,13 @@ namespace UnuGames
 		public BindingField
 			textValue = new BindingField ("Text");
 
-		public override void Init ()
+		public override void Init (bool forceInit)
 		{
-			CheckInit ();
+			if (CheckInit (forceInit)) {
+				input = GetComponent<InputField> ();
 
-			input = GetComponent<InputField> ();
-
-			SubscribeOnChangedEvent (textValue, OnUpdateText);
+				SubscribeOnChangedEvent (textValue, OnUpdateText);
+			}
 		}
 
 		public void OnUpdateText (object newText)

@@ -15,17 +15,12 @@ namespace UnuGames
 		public string Format;
 		public float timeChange = 0.25f;
 
-		public override void Init ()
+		public override void Init (bool forceInit)
 		{
-			if (!Application.isPlaying)
-				return;
-			if (isInit)
-				return;
-			isInit = true;
-
-			text = GetComponent<Text> ();
-
-			SubscribeOnChangedEvent (textValue, OnUpdateText);
+			if (CheckInit (forceInit)) {
+				text = GetComponent<Text> ();
+				SubscribeOnChangedEvent (textValue, OnUpdateText);
+			}
 		}
 
 		public void OnUpdateText (object newText)

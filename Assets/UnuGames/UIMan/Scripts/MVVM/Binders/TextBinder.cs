@@ -15,18 +15,14 @@ namespace UnuGames
 		public BindingField textColor = new BindingField ("Color", true);
 		public string Format;
 
-		public override void Init ()
+		public override void Init (bool forceInit)
 		{
-			if (!Application.isPlaying)
-				return;
-			if (isInit)
-				return;
-			isInit = true;
+			if (CheckInit (forceInit)) {
+				text = GetComponent<Text> ();
 
-			text = GetComponent<Text> ();
-
-			SubscribeOnChangedEvent (textValue, OnUpdateText);
-			SubscribeOnChangedEvent (textColor, OnUpdateColor);
+				SubscribeOnChangedEvent (textValue, OnUpdateText);
+				SubscribeOnChangedEvent (textColor, OnUpdateColor);
+			}
 		}
 
 		public void OnUpdateText (object newText)

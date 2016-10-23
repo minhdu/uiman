@@ -18,14 +18,14 @@ namespace UnuGames
 		public bool autoCorrectSize;
 		public bool zeroAlphaOnImageNull;
 
-		public override void Init ()
+		public override void Init (bool forceInit)
 		{
-			CheckInit ();
+			if (CheckInit (forceInit)) {
+				image = GetComponent<Image> ();
 
-			image = GetComponent<Image> ();
-
-			SubscribeOnChangedEvent (imageValue, OnUpdateImage);
-			SubscribeOnChangedEvent (imageColor, OnUpdateColor);
+				SubscribeOnChangedEvent (imageValue, OnUpdateImage);
+				SubscribeOnChangedEvent (imageColor, OnUpdateColor);
+			}
 		}
 
 		public void OnUpdateImage (object newImage)

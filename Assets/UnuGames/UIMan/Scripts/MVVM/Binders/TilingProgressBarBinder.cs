@@ -13,13 +13,13 @@ namespace UnuGames
 			Value = new BindingField ("float");
 		public float changeSpeed = 0.01f;
     
-		public override void Init ()
+		public override void Init (bool forceInit)
 		{
-			CheckInit ();
+			if (CheckInit (forceInit)) {
+				value = GetComponent<TilingProgressBar> ();
 
-			value = GetComponent<TilingProgressBar> ();
-
-			SubscribeOnChangedEvent (Value, OnUpdateValue);
+				SubscribeOnChangedEvent (Value, OnUpdateValue);
+			}
 		}
 
 		public void OnUpdateValue (object val)
