@@ -3,7 +3,7 @@ using System.Reflection;
 using UnityEngine;
 using System.Collections.Generic;
 
-namespace UnuGames {
+namespace UnuGames.MVVM {
 
 	/// <summary>
 	/// Data context.
@@ -15,13 +15,15 @@ namespace UnuGames {
 		static public void Rebind (object modelInstance) {
 			for (int i = 0; i < contextsList.Count; i++) {
 				DataContext context = contextsList [i];
-				if (context.type == ContextType.PROPERTY && context.viewModel is IModule) {
+				if (context.viewModel is IModule) {
 					IModule module = context.viewModel as IModule;
 					ObservableModel model = (ObservableModel)modelInstance;
-					if(module.OriginalData.Equals (modelInstance)) {
+					if (module.OriginalData.Equals (modelInstance)) {
 						context.model = model;
 						context.RegisterBindingMessage (true);
 					}
+				} else {
+					context.RegisterBindingMessage (true);
 				}
 			}
 		}
@@ -40,8 +42,6 @@ namespace UnuGames {
 				return propertyInfo;
 			}
 		}
-
-		List<BinderBase> refBinders = new List<BinderBase>();
 
         public void Clear () {
             viewModel = null;
@@ -67,8 +67,8 @@ namespace UnuGames {
 			RegisterBindingMessage (false);
 		}
 
+		// Subscript for property change event
 		public void Rebinding () {
-			// Subscript for property change event
 			GetPropertyInfo ();
 			if (propertyInfo != null) {
 				model = propertyInfo.GetValue (viewModel, null);
@@ -85,7 +85,6 @@ namespace UnuGames {
 			for (int i = 0; i < binders.Length; i++) {
 				BinderBase binder = binders [i];
 				if (binder.mDataContext == this) {
-					refBinders.Add (binder);
 					binder.Init (forceReinit);
 				}
 			}

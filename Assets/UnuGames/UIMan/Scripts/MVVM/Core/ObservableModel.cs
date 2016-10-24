@@ -3,7 +3,7 @@ using System.Reflection;
 using System;
 using System.Diagnostics;
 
-namespace UnuGames
+namespace UnuGames.MVVM
 {
 	public class ObservableModel : IObservable
 	{

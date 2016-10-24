@@ -1,6 +1,6 @@
 using System;
 
-namespace UnuGames
+namespace UnuGames.MVVM
 {
 	public interface IObservable
 	{

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace UnuGames
+namespace UnuGames.MVVM
 {
 	[RequireComponent(typeof(TilingProgressBar))]
 	[DisallowMultipleComponent]

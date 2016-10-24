@@ -391,6 +391,7 @@ namespace UnuGames
 			string attribute = "\t[UIManProperty]";
 			string property = string.Format ("\tpublic {0} {1} {{", PropertyType.GetAllias (), propertyName);
 			string getter = string.Format ("\t\tget {{ return _{0}; }}", fieldName);
+			//TODO: if()
 			string setter = string.Format ("\t\tset {{ _{0} = value; OnPropertyChanged(); }}", fieldName);
 			string code = NewLine () + field + NewLine () + attribute + NewLine () + property + NewLine () + getter + NewLine () + setter + NewLine () + "\t}";
 			return code;

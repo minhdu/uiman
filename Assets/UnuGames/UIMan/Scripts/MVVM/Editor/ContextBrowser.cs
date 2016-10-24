@@ -1,12 +1,11 @@
-﻿using UnuGames.MVVM;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
 using System;
 
-namespace UnuGames
+namespace UnuGames.MVVM
 {
 	public class ContextBrowser
 	{

@@ -1,9 +1,8 @@
-using UnuGames.MVVM;
 using UnityEditor;
 using UnityEngine;
 using System.Reflection;
 
-namespace UnuGames
+namespace UnuGames.MVVM
 {
 	[CustomEditor(typeof(DataContext))]
 	public class DataContextEditor : Editor

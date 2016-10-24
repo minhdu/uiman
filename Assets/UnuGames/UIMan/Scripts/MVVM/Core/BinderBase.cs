@@ -1,10 +1,9 @@
-using UnuGames.MVVM;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 
-namespace UnuGames {
+namespace UnuGames.MVVM {
 
 	/// <summary>
 	/// Base class for all binders.

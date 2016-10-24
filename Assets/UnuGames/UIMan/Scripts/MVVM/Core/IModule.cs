@@ -1,4 +1,4 @@
-﻿namespace UnuGames
+﻿namespace UnuGames.MVVM
 {
 	public interface IModule
 	{

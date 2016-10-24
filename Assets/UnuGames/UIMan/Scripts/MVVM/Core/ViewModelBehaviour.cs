@@ -5,7 +5,7 @@ using System.ComponentModel;
 using System;
 using System.Reflection;
 
-namespace UnuGames {
+namespace UnuGames.MVVM {
 
 	/// <summary>
 	/// ViewModel behavior (part of MVVM pattern).

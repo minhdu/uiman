@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using UnuGames.MVVM;
 namespace UnuGames
 {
 	public class UIManModule<T> : ViewModelBehaviour, IModule where T : new()

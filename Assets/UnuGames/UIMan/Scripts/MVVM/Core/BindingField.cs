@@ -2,7 +2,7 @@
 using System.Collections;
 using System;
 
-namespace UnuGames
+namespace UnuGames.MVVM
 {
 	[Serializable]
 	public class BindingField

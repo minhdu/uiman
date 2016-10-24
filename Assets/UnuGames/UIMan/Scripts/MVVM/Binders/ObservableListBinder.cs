@@ -5,7 +5,7 @@ using UnuGames.MVVM;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace UnuGames
+namespace UnuGames.MVVM
 {
 	[RequireComponent (typeof(ScrollRect))]
 	[DisallowMultipleComponent]

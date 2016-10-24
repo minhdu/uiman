@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using System.Collections.Generic;
 
-namespace UnuGames
+namespace UnuGames.MVVM
 {
 	public class VisibleBinder : BinderBase
 	{

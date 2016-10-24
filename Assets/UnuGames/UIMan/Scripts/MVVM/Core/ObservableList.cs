@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace UnuGames
+namespace UnuGames.MVVM
 {
 	public class ObservableList<T> : IEnumerable<T>, IEnumerable, IObservaleCollection
 	{
