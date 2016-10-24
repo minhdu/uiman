@@ -9,7 +9,7 @@ public class UILoadingInspector : Editor {
 	public override void OnInspectorGUI ()
 	{
 		GUILayout.BeginHorizontal ("Box");
-		LableHelper.HeaderLabel ("UIMan Loading Indicator");
+		LabelHelper.HeaderLabel ("UIMan Loading Indicator");
 		GUILayout.EndHorizontal ();
 
 		GUILayout.BeginVertical ("Box");

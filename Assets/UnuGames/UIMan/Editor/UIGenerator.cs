@@ -136,7 +136,7 @@ namespace UnuGames
 
 					// Title
 					GUILayout.Space (2);
-					LableHelper.TitleLabel (selectedType.Name);
+					LabelHelper.TitleLabel (selectedType.Name);
 					LineHelper.Draw (Color.gray);
 
 					// Common
@@ -174,7 +174,7 @@ namespace UnuGames
 						
 					// Base type
 					GUILayout.Space (10);
-					LableHelper.HeaderLabel ("Type");
+					LabelHelper.HeaderLabel ("Type");
 					LineHelper.Draw (Color.gray);
 					baseTypePopup.Draw ();
 
@@ -189,7 +189,7 @@ namespace UnuGames
 
 					// Properties
 					GUILayout.Space (10);
-					LableHelper.HeaderLabel ("Properties");
+					LabelHelper.HeaderLabel ("Properties");
 					LineHelper.Draw (Color.gray);
 
 					propertiesScrollPos = EditorGUILayout.BeginScrollView(propertiesScrollPos, GUILayout.ExpandWidth (true), GUILayout.ExpandHeight (true));

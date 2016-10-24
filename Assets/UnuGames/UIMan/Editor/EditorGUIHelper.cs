@@ -319,7 +319,7 @@ namespace UnuGames {
 		}
 	}
 
-	public class LableHelper
+	public class LabelHelper
 	{
 
 		static GUIStyle headerLabel;

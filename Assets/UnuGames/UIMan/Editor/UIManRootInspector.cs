@@ -20,7 +20,7 @@ namespace UnuGames
 			UIMan uiManager = (UIMan)target;
 
 			GUILayout.BeginHorizontal ("Box");
-			LableHelper.HeaderLabel ("UIMan Root");
+			LabelHelper.HeaderLabel ("UIMan Root");
 			GUILayout.EndHorizontal ();
 
 			GUILayout.BeginVertical ("Box");

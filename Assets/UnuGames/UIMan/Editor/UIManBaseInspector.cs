@@ -20,14 +20,14 @@ namespace UnuGames
 		public override void OnInspectorGUI ()
 		{
 			GUILayout.BeginHorizontal ("Box");
-			LableHelper.HeaderLabel ("UIMan View Model");
+			LabelHelper.HeaderLabel ("UIMan View Model");
 			GUILayout.EndHorizontal ();
 			LineHelper.Draw (Color.gray);
 
 			UIManBase uiManBase = (UIManBase)target;
 		
 			EditorGUILayout.Space ();
-			LableHelper.HeaderLabel ("General");
+			LabelHelper.HeaderLabel ("General");
 			GUILayout.BeginVertical ("Box");
 
 			if (uiManBase is UIManDialog) {
@@ -89,7 +89,7 @@ namespace UnuGames
 			LineHelper.Draw (Color.gray);
 
 			EditorGUILayout.Space ();
-			LableHelper.HeaderLabel ("Custom fields");
+			LabelHelper.HeaderLabel ("Custom fields");
 			GUILayout.BeginVertical ("Box");
 			DrawDefaultInspector ();
 			GUILayout.EndVertical ();

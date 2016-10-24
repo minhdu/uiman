@@ -26,7 +26,7 @@ public class UIManConfigEditor : Editor {
 			bgPath = new PathBrowser (config.backgroundRootFolder, rootUrl);
 		}
 
-		LableHelper.TitleLabel ("UIMan Configuration");
+		LabelHelper.TitleLabel ("UIMan Configuration");
 		LineHelper.Draw (Color.blue);
 		EditorGUILayout.Space ();
 
