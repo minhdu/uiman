@@ -418,7 +418,8 @@ namespace UnuGames
 		IEnumerator LoadUnityScene (string name, Type screen, params object[] args)
 		{
 			yield return SceneManager.LoadSceneAsync (name);
-			HideScreen (CurrentScreen.UIType);
+			if(CurrentScreen != null)
+				HideScreen (CurrentScreen.UIType);
 			OnLoadUnitySceneComplete (screen, args);
 		}
 
