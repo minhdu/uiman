@@ -832,18 +832,18 @@ namespace UnuGames
 			}
 		}
 
-		public UIManBase GetHandler<T> () where T : UIManBase
+		public T GetHandler<T> () where T : UIManBase
 		{
 			Type uiType = typeof(T);
 			bool dialog = uiType.BaseType == typeof(UIManDialog) ? true : false;
 			if (dialog) {
 				if (dialogDict.ContainsKey (uiType))
-					return dialogDict [uiType];
+					return (T)(object)dialogDict [uiType];
 				else
 					return null;
 			} else {
 				if (screenDict.ContainsKey (uiType))
-					return screenDict [uiType];
+					return (T)(object)screenDict [uiType];
 				else
 					return null;
 			}
