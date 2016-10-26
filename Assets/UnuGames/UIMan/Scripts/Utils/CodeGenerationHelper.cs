@@ -246,7 +246,7 @@ namespace UnuGames
 				return null;
 
 			try {
-				code = File.ReadAllText (path);
+				code = AssetDatabase.LoadAssetAtPath<TextAsset>(path).text;
 				AssetDatabase.DeleteAsset (path);
 			} catch (IOException ex) {
 				UnuLogger.LogError (ex);
@@ -274,9 +274,11 @@ namespace UnuGames
 	
 				string currentCode = "";
 				if (File.Exists (path))
-					currentCode = File.ReadAllText (path);
+					currentCode = AssetDatabase.LoadAssetAtPath<TextAsset>(path).text;
 				if (!code.Equals (currentCode)) {
-					File.WriteAllText (path, code, System.Text.Encoding.UTF8);
+					using (StreamWriter writer = new StreamWriter(path)) {
+						writer.Write(code);
+					}
 					return true;
 				} else {
 					return false;
