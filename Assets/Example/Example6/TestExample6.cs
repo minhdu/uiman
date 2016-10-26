@@ -30,6 +30,6 @@ public class TestExample6 : MonoBehaviour {
 	}
 
 	public void GetHandler () {
-		((UIExample2)UIMan.Instance.GetHandler<UIExample2> ()).Log ();
+		UIMan.Instance.GetHandler<UIExample2> ().Log ();
 	}
 }
