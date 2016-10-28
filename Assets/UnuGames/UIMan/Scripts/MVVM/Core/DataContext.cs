@@ -15,9 +15,11 @@ namespace UnuGames.MVVM {
 		static public void NotifyObjectChange (object modelInstance) {
 			for (int i = 0; i < contextsList.Count; i++) {
 				DataContext context = contextsList [i];
-				PropertyInfo propertyInfo = context.viewModel.IsBindingTo (modelInstance);
-				if (propertyInfo != null) {
-					context.viewModel.NotifyModelChange (modelInstance);
+				if (context.model != null && context.model is ObservableModel) {
+					PropertyInfo propertyInfo = context.viewModel.IsBindingTo (modelInstance);
+					if (propertyInfo != null) {
+						context.viewModel.NotifyModelChange (modelInstance);
+					}
 				}
 			}
 		}
