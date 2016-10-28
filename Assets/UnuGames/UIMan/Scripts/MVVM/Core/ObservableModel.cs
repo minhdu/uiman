@@ -62,15 +62,7 @@ namespace UnuGames.MVVM
 		/// </summary>
 		public void OnPropertyChanged ()
 		{
-			if(propertyCache.Count == 0)
-				DataContext.Rebind (this);
-
-			string propertyName = GetCaller ();
-			PropertyInfo property = null;
-			if (propertyCache.TryGetValue (propertyName, out property)) {
-				object newValue = property.GetValue (this, null);
-				NotifyPropertyChanged (propertyName, newValue);
-			}
+			DataContext.NotifyObjectChange (this);
 		}
 
 		/// <summary>

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnuGames;
 using UnuGames.MVVM;
 
@@ -7,14 +7,13 @@ public partial class UIExample7 : UIManScreen {
 #region Fields
 
 	// Your fields here
-	public UserModule user;
 #endregion
 
 #region Built-in Events
 	public override void OnShow (params object[] args)
 	{
 		base.OnShow (args);
-		user.DataInstance = new UserModel ();
+		User = new UserModel ();
 	}
 
 	public override void OnShowComplete ()
@@ -37,13 +36,13 @@ public partial class UIExample7 : UIManScreen {
 
 	// Your custom code here
 	public void Change1 () {
-		user.DataInstance.Name = "Minh Du";
-		user.DataInstance.Avatar = null;
-		user.DataInstance.Age = 18;
+		User.Name = "Minh Du";
+		User.Avatar = "";
+		User.Age = 18;
 	}
 
 	public void Change2 () {
-		user.DataInstance = new UserModel () { Name = "Dang Minh Du", Age = 25, Avatar = "uiman-icon-1"};
+		User = new UserModel () { Name = "Dang Minh Du", Age = 25, Avatar = "uiman-icon-1"};
 	}
 #endregion
 

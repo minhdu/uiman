@@ -173,6 +173,24 @@ namespace UnuGames.MVVM {
 				}
 			}
 		}
+
+		/// <summary>
+		/// Determines whether this instance is binding to the specified modelInstance.
+		/// </summary>
+		/// <returns><c>true</c> if this instance is binding to the specified modelInstance; otherwise, <c>false</c>.</returns>
+		/// <param name="modelInstance">Model instance.</param>
+		public PropertyInfo IsBindingTo (object modelInstance) {
+			foreach(KeyValuePair<string, PropertyInfo> property in propertyCache) {
+				if (property.Value != null) {
+					object propertyVal = property.Value.GetValue (this, null);
+					if (propertyVal != null && propertyVal.Equals (modelInstance)) {
+						return property.Value;
+					}
+				}
+			}
+
+			return null;
+		}
 	}
 
 	/// <summary>

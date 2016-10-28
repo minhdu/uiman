@@ -12,18 +12,12 @@ namespace UnuGames.MVVM {
 
 #region DataContext Factory
 		static List<DataContext> contextsList = new List<DataContext> ();
-		static public void Rebind (object modelInstance) {
+		static public void NotifyObjectChange (object modelInstance) {
 			for (int i = 0; i < contextsList.Count; i++) {
 				DataContext context = contextsList [i];
-				if (context.viewModel is IModule) {
-					IModule module = context.viewModel as IModule;
-					ObservableModel model = (ObservableModel)modelInstance;
-					if (module.OriginalData.Equals (modelInstance)) {
-						context.model = model;
-						context.RegisterBindingMessage (true);
-					}
-				} else {
-					context.RegisterBindingMessage (true);
+				PropertyInfo propertyInfo = context.viewModel.IsBindingTo (modelInstance);
+				if (propertyInfo != null) {
+					context.viewModel.NotifyModelChange (modelInstance);
 				}
 			}
 		}
@@ -54,28 +48,21 @@ namespace UnuGames.MVVM {
 			if(!contextsList.Contains(this))
 				contextsList.Add (this);
 
-			GetPropertyInfo ();
-			if (propertyInfo != null) {
-				model = propertyInfo.GetValue (viewModel, null);
-				if (model == null && type == ContextType.PROPERTY)
-					model = ReflectUtils.GetCachedTypeInstance (propertyInfo.PropertyType);
-				// Subscript for property change event
-				if(model != null)
-					viewModel.SubcriptObjectAction (model);
-			}
-
+			Init ();
 			RegisterBindingMessage (false);
 		}
 
 		// Subscript for property change event
-		public void Rebinding () {
+		public void Init () {
 			GetPropertyInfo ();
 			if (propertyInfo != null) {
 				model = propertyInfo.GetValue (viewModel, null);
 				if (model == null && type == ContextType.PROPERTY)
 					model = ReflectUtils.GetCachedTypeInstance (propertyInfo.PropertyType);
-				if(model != null)
+				if (model != null) {
 					viewModel.SubcriptObjectAction (model);
+					viewModel.SubscribeAction (propertyName, viewModel.NotifyModelChange);
+				}
 			}
 		}
 

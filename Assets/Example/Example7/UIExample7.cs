@@ -1,4 +1,4 @@
-﻿
+
 using UnuGames;
 using UnuGames.MVVM;
 
@@ -6,5 +6,12 @@ using UnuGames.MVVM;
 
 public partial class UIExample7 : UIManScreen {
 
+
+	UserModel _user;
+	[UIManProperty]
+	public UserModel User {
+		get { return _user; }
+		set { _user = value; OnPropertyChanged(); }
+	}
 
 }

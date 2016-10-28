@@ -119,12 +119,7 @@ namespace UnuGames.MVVM {
 		/// <param name="propertyName">Property name.</param>
 		void RegisterViewModel (string propertyName, Action<object> updateAction) {
 			if(mDataContext != null && !string.IsNullOrEmpty(propertyName)) {
-				if (mDataContext.model != null && mDataContext.model is ObservableModel) {
-					((ObservableModel)mDataContext.model).SubscribeAction (propertyName, updateAction);
-					mDataContext.viewModel.SubscribeAction (propertyName, updateAction);
-				} else {
-					mDataContext.viewModel.SubscribeAction (propertyName, updateAction);
-				}
+				mDataContext.viewModel.SubscribeAction (propertyName, updateAction);
 			}
 		}
 
