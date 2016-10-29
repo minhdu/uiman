@@ -169,8 +169,10 @@ namespace UnuGames.MVVM
 			listModules [index].OriginalData = obj;
 		}
 
-		void RecalculatePosition (int startIndex = 0)
+		void RecalculatePosition (int startIndex = 1)
 		{
+			if (startIndex <= 0)
+				startIndex = 1;
 			for (int i = startIndex-1; i < dataList.Count; i++) {
 				Vector2 position = Vector2.zero;
 				if (scrollRect.horizontal) {

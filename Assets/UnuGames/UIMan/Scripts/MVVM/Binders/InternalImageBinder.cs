@@ -30,14 +30,12 @@ namespace UnuGames.MVVM
 
 		public void OnUpdateImage (object newImage)
 		{
-			if (string.IsNullOrEmpty(newImage.ToString())) {
+			image.color = Color.white;
+			image.sprite = ResourceFactory.Load<Sprite> (resourcePath + newImage.ToString ());
+			if (autoCorrectSize)
+				image.SetNativeSize ();
+			if(zeroAlphaOnImageNull && image.sprite == null)
 				image.color = new Color (image.color.r, image.color.g, image.color.b, 0);
-			} else {
-				image.color = Color.white;
-				image.sprite = ResourceFactory.Load<Sprite> (resourcePath + newImage.ToString ());
-				if (autoCorrectSize)
-					image.SetNativeSize ();
-			}
 		}
 
 		public void OnUpdateColor (object newColor)
