@@ -14,10 +14,12 @@ public partial class UIExample3 : UIManScreen {
 	{
 		base.OnShow (args);
 
-		friends.Add(new Friend() {Name = "1", Age = 1});
-		friends.Add(new Friend() {Name = "2", Age = 2});
-		friends.Add(new Friend() {Name = "3", Age = 3});
-		friends.Add(new Friend() {Name = "4", Age = 4});
+		if (friends.Count == 0) {
+			friends.Add (new Friend () { Name = "1", Age = 1 });
+			friends.Add (new Friend () { Name = "2", Age = 2 });
+			friends.Add (new Friend () { Name = "3", Age = 3 });
+			friends.Add (new Friend () { Name = "4", Age = 4 });
+		}
 
 	}
 

@@ -144,7 +144,7 @@ namespace UnuGames
 					GUILayout.Space (2);
 					if (selectedType.BaseType != typeof(ObservableModel)) {
 						GUILayout.BeginHorizontal();
-						if (GUILayout.Button ("Edit UI", GUILayout.Height (30))) {
+						if (GUILayout.Button ("Edit View (UI)", GUILayout.Height (30))) {
 
 							GameObject prefabInstance;
 							UnityEngine.Object obj = FindObjectOfType (selectedType);

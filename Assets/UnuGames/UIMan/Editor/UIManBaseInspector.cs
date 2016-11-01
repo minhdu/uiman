@@ -95,7 +95,32 @@ namespace UnuGames
 			GUILayout.EndVertical ();
 
 			EditorGUILayout.Space ();
-			if (GUILayout.Button ("Edit Logic", GUILayout.Height(25))) {
+			if (GUILayout.Button ("Edit View (UI)", GUILayout.Height (25))) {
+
+				GameObject prefabInstance;
+				UnityEngine.Object obj = FindObjectOfType (uiManBase.UIType);
+				if (obj != null) {
+					prefabInstance = ((MonoBehaviour)obj).gameObject;
+				} else {
+
+					bool isDialog = uiManBase.GetUIBaseType() == UIBaseType.DIALOG;
+//					string prefabFolder = GetUIPrefabPath (selectedType, isDialog);
+//					string prefabFile = selectedType.Name + PREFAB_EXT;
+//					string prefabPath = Path.Combine (prefabFolder, prefabFile);
+//					GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject> (prefabPath);
+//					if (prefab == null) {
+//						prefab = FindAssetObject<GameObject> (selectedType.Name, PREFAB_EXT);
+//					}
+
+					prefabInstance = PrefabUtility.InstantiatePrefab (uiManBase.gameObject) as GameObject;
+					if (isDialog)
+						prefabInstance.transform.SetParent (UIMan.Instance.dialogRoot, false);
+					else
+						prefabInstance.transform.SetParent (UIMan.Instance.screenRoot, false);
+				}
+				Selection.activeGameObject = prefabInstance;
+			}
+			if (GUILayout.Button ("Edit View Logic (Handler)", GUILayout.Height(25))) {
 				string handler = CodeGenerationHelper.GetScriptPathByType (target.GetType ());
 				handler = handler.Replace (".cs", ".Handler.cs");
 				UnityEditorInternal.InternalEditorUtility.OpenFileAtLineExternal (handler, 1);
