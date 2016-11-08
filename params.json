@@ -1,0 +1,6 @@
+{
+  "name": "UIMan",
+  "tagline": "Fast and flexible solution for development and UI management with MVVM pattern",
+  "body": "<p align=\"center\">\r\n<img src=\"https://cloud.githubusercontent.com/assets/5210346/20105222/5ec0b97c-a603-11e6-8bf9-717b9d0163bb.png\"><img />\r\n</p>\r\n\r\nUIMan is fast and flexible solution for UI development and management with MVVM pattern.\r\nUIMan is designed most suitable for mobile game.\r\n\r\n### Features\r\n* Support Databinding, Observable and MVVM for implementing UI with uGUI.\r\n* Prefab base UI, async loading.\r\n* Auto Code Generation.\r\n* UI flow and layer management system.\r\n* UI Events.\r\n* Customizable loading indicator.\r\n* Easy to extend and customize.\r\n\r\n### Plugin's Structure\r\n<p align=\"center\">\r\n<img src=\"https://cloud.githubusercontent.com/assets/5210346/20105012/a95b257c-a602-11e6-8ac3-2429ed30a8e9.png\"><img />\r\n</p>\r\n\r\n### Detail Documentation\r\n[https://goo.gl/PyXBBU](https://goo.gl/PyXBBU)\r\n\r\n### Authors and Contributors\r\nĐặng Minh Dự (@minhdu)\r\n\r\n### Support or Contact\r\nHaving trouble with UIMan? Check out our [documentation](https://goo.gl/PyXBBU) or [contact support](cp.dev.minhdu@gmail.com) and we’ll help you sort it out.\r\n",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}
