@@ -1,0 +1,19 @@
+History:
+
+*v1.0.0 (24/02/2017)
+First release
+
+*v1.0.1
+Note:
+- Add new Example (old example still exist in Zip file)
+- Remove OnDisable fuction of Binders
+- Rename LoadingIndicator -> ActivityIndicator
+- Fix bug animation idle (mecanim) not working
+- Fix show/hide screen and dialog transition issues
+- Improve ObserverListBinder, fully support for pooling
+- Update document
+
+*v1.0.2
+Note:
+- Replace LeanTween with UIMan's internal tweener
+- Bug fixes
