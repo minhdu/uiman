@@ -9,11 +9,11 @@ Fast and flexible solution for UI development and management with MVVM pattern.
 * Support Databinding, Observable and MVVM for implementing UI with uGUI. 
 * Prefab base UI with async loading. 
 * UI flow and layer management system. 
-* UI animation (Show, Idle, Hide). 
+* UI animation (show, idle, hide). 
 * UI events. 
 * Customizable activity indicator. 
-* Unlimited list (Scroll Rect). 
-* Component-based Binders. 
+* Unlimited list (scroll rect). 
+* Component-based binders. 
 * Easy to extend and customize. 
 * Auto code generation. 
 
